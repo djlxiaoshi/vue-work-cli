@@ -4,7 +4,7 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 // 初始化css
-// import './assets/css/initialize.css';
+import './assets/css/initialize.css';
 // 引入Element-UI
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';

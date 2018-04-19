@@ -1,12 +1,23 @@
 <template>
   <div id="app">
-    <router-view/>
+    <el-row class="tac">
+      <el-col :span="4">
+        <AppSidebar></AppSidebar>
+      </el-col>
+      <el-col :span="20">
+        <router-view/>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
+import AppSidebar from '@/components/app-sidebar/AppSidebar';
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    AppSidebar
+  }
 };
 </script>
 
@@ -17,6 +28,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
