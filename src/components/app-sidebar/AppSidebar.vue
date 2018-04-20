@@ -1,6 +1,7 @@
 <template>
   <el-menu
     :router="true"
+    :collapse-transition="false"
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
@@ -41,11 +42,10 @@ export default {
   name: 'AppSidebar',
   data () {
     return {
-      isCollapse: false,
       routesConfig: sidebarConfig
     };
   },
-  props: [],
+  props: ['isCollapse'],
   methods: {
   }
 };

@@ -1,10 +1,10 @@
 <template>
-  <h1>Child2</h1>
+  <h1>接口查询</h1>
 </template>
 
 <script>
 export default {
-  name: 'Child2',
+  name: 'Interface',
   data () {
     return {};
   },

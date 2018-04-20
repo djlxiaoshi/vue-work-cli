@@ -1,10 +1,10 @@
 <template>
-  <router-view/>
+  <h1>数据库查询</h1>
 </template>
 
 <script>
 export default {
-  name: 'About',
+  name: 'Database',
   data () {
     return {};
   },

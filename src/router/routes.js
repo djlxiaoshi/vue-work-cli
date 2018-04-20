@@ -3,47 +3,64 @@
  * @Date 2018/4/19 17:46
  */
 import AppMain from '@/components/app-main/AppMain';
-import Child1 from '@/components/child/Child1';
-import Child2 from '@/components/child/Child2';
-import Child3 from '@/components/child/Child3';
-import Parent1 from '@/components/parent/Parent1';
+import Interface from '@/components/interface/Interface';
+import Database from '@/components/database/Database';
+import Auth from '@/components/auth/Auth';
+import Apply from '@/components/auth/Apply';
+import Check from '@/components/auth/Check';
+import Settings from '@/components/auth/Settings';
+
+/*
+* 配置字段说明 Vue-router 部分 参考此链接 https://router.vuejs.org/zh-cn/api/options.html#routes
+*icon：菜单图标
+*label：菜单中文名
+*notShowAtSidebar： 是否显示在菜单栏中
+* */
 
 const sidebarConfig = [
   {
-    path: '/home',
-    name: 'Home',
+    path: '/interface',
+    name: 'Interface',
     icon: 'el-icon-location',
-    label: '导航一',
-    component: Child1
+    label: '接口查询',
+    component: Interface
   },
   {
-    path: '/parent',
+    path: '/database',
+    name: 'Database',
     icon: 'el-icon-menu',
-    label: '导航二',
-    component: Parent1, // 这里必须要有一个父组件 里面设置<router-view/>，不然里面的子组件会找不到<router-view/>
+    label: '数据库查询',
+    component: Database
+  },
+  {
+    path: '/auth',
+    icon: 'el-icon-menu',
+    label: '权限管理',
+    component: Auth,
     children: [
       {
-        path: 'child2',
-        name: 'Child2',
-        label: '选项一',
-        component: Child2
+        path: 'apply',
+        name: 'Apply',
+        label: '权限申请',
+        component: Apply
       },
       {
-        path: 'child3',
-        name: 'Child3',
-        label: '选项二',
-        component: Child3
+        path: 'check',
+        name: 'Check',
+        label: '权限审核',
+        component: Check
       },
       {
-        path: '**',
-        redirect: 'child2',
-        notShowAtSidebar: true
+        path: 'settings',
+        name: 'Settings',
+        label: '权限设置',
+        component: Settings
       }
     ]
   },
   {
     path: '**',
-    redirect: '/home',
+    redirect: '/interface',
     notShowAtSidebar: true
   }
 ];

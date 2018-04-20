@@ -1,10 +1,10 @@
 <template>
-  <router-view/>
+  <h1>权限申请</h1>
 </template>
 
 <script>
 export default {
-  name: 'Parent1',
+  name: 'Apply',
   data () {
     return {};
   },

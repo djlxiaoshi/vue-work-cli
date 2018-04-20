@@ -1,10 +1,10 @@
 <template>
-  <h1>Child1</h1>
+  <h1>权限设置</h1>
 </template>
 
 <script>
 export default {
-  name: 'Child1',
+  name: 'Settings',
   data () {
     return {};
   },
