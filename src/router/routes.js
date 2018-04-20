@@ -2,36 +2,62 @@
  * @Author JohnLi
  * @Date 2018/4/19 17:46
  */
-import HelloWorld from '@/components/HelloWorld';
+import AppMain from '@/components/app-main/AppMain';
+import Child1 from '@/components/child/Child1';
+import Child2 from '@/components/child/Child2';
+import Child3 from '@/components/child/Child3';
+import Parent1 from '@/components/parent/Parent1';
 
-export default [
+const sidebarConfig = [
   {
-    path: '/',
-    name: 'HelloWorld',
+    path: '/home',
+    name: 'Home',
     icon: 'el-icon-location',
     label: '导航一',
-    component: HelloWorld
+    component: Child1
   },
   {
-    path: '/about',
-    name: 'About3',
+    path: '/parent',
     icon: 'el-icon-menu',
     label: '导航二',
-    component: HelloWorld,
+    component: Parent1, // 这里必须要有一个父组件 里面设置<router-view/>，不然里面的子组件会找不到<router-view/>
     children: [
       {
-        path: '/about',
-        name: 'About',
+        path: 'child2',
+        name: 'Child2',
         label: '选项一',
-        component: HelloWorld
+        component: Child2
       },
       {
-        path: '/about2',
-        name: 'About2',
+        path: 'child3',
+        name: 'Child3',
         label: '选项二',
-        component: HelloWorld
+        component: Child3
+      },
+      {
+        path: '**',
+        redirect: 'child2',
+        notShowAtSidebar: true
       }
     ]
   },
-  {path: '', redirect: '/'}
+  {
+    path: '**',
+    redirect: '/home',
+    notShowAtSidebar: true
+  }
 ];
+
+const routes = [
+  {
+    path: '/',
+    component: AppMain,
+    children: sidebarConfig
+  },
+  {
+    path: '**',
+    redirect: '/'
+  }
+];
+
+export { routes, sidebarConfig };

@@ -4,6 +4,6 @@
  */
 const shell = require('shelljs');
 const env = process.env.ENV;
-const src = `config/${env}.env.js`;
-const to = `config/environment.js`;
+const src = `src/environment/${env}.env.js`;
+const to = `src/environment/environment.js`;
 shell.cp('-R', src, to);
