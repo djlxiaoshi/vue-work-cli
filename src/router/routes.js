@@ -9,34 +9,36 @@ import Auth from '@/components/auth/Auth';
 import Apply from '@/components/auth/Apply';
 import Check from '@/components/auth/Check';
 import Settings from '@/components/auth/Settings';
+import Plugins from '@/components/plugins/Plugins';
 
 /*
 * 配置字段说明 Vue-router 部分 参考此链接 https://router.vuejs.org/zh-cn/api/options.html#routes
 *icon：菜单图标
 *label：菜单中文名
-*notShowAtSidebar： 是否显示在菜单栏中
+*hidden： 是否显示在菜单栏中
 * */
 
 const sidebarConfig = [
   {
     path: '/interface',
     name: 'Interface',
-    icon: 'el-icon-location',
+    icon: 'fa-link',
     label: '接口查询',
     component: Interface
   },
   {
     path: '/database',
     name: 'Database',
-    icon: 'el-icon-menu',
+    icon: 'fa-database',
     label: '数据库查询',
     component: Database
   },
   {
     path: '/auth',
-    icon: 'el-icon-menu',
+    icon: 'fa-th-large',
     label: '权限管理',
     component: Auth,
+    childrenPosition: 'top',
     children: [
       {
         path: 'apply',
@@ -55,13 +57,24 @@ const sidebarConfig = [
         name: 'Settings',
         label: '权限设置',
         component: Settings
+      },
+      {
+        path: '',
+        redirect: 'apply',
+        hidden: true
       }
     ]
   },
   {
+    path: '/plugins',
+    name: 'Plugins',
+    component: Plugins,
+    hidden: true
+  },
+  {
     path: '**',
     redirect: '/interface',
-    notShowAtSidebar: true
+    hidden: true
   }
 ];
 
