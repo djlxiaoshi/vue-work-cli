@@ -12,7 +12,7 @@
       class="el-menu-vertical-demo"
       :collapse="isCollapse" >
       <template v-for="(route) in routesConfig">
-        <template v-if="!route['hidden']">
+        <template v-if="!route['hidden'] && (!route['permission'] || route['permission'].includes(globalData['roleTypeId']))">
           <el-submenu class="el-submenu-title"
                       :index="route.path"
                       :key="route.path"
@@ -53,11 +53,14 @@
 
 <script>
 import { sidebarConfig } from '@/router/routes';
+import globalData from '@/assets/js/global';
+
 export default {
   name: 'AppSidebar',
   data () {
     return {
-      routesConfig: sidebarConfig
+      routesConfig: sidebarConfig,
+      globalData: globalData
     };
   },
   props: ['isCollapse'],

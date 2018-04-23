@@ -1,8 +1,13 @@
 <template>
   <div class="app-auth-page">
-    <AppHeader
-      :tabList="tabList"></AppHeader>
-    <router-view/>
+    <div class="page-header">
+      <AppHeader
+        :tabList="tabList">
+      </AppHeader>
+    </div>
+    <div class="page-body">
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -29,6 +34,8 @@ export default {
 
 <style lang="scss" scoped>
   .app-auth-page {
-
+    .page-body {
+      padding: 20px;
+    }
   }
 </style>

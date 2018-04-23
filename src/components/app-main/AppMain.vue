@@ -1,10 +1,12 @@
 <template>
   <el-row class="app-main">
-    <el-col :span="4" class="sidebar-wrap" :class="{'collapse-width': isCollapse}">
+    <el-col :span="4" class="app-main-left" :class="{'collapse-width': isCollapse}">
       <AppSidebar :isCollapse="isCollapse"></AppSidebar>
     </el-col>
     <el-col :span="20">
-      <router-view/>
+      <div class="app-main-body">
+        <router-view/>
+      </div>
     </el-col>
   </el-row>
 </template>
@@ -35,7 +37,7 @@ export default {
   @import '../../assets/styles/index';
   .app-main {
     height: 100vh;
-    .sidebar-wrap {
+    .app-main-left {
       height: 100%;
       background-color: $appSidebarBgColor;
       .el-menu {

@@ -40,9 +40,6 @@ export default {
   methods: {
     edit (row) {
 
-    },
-    formatter (row) {
-      return 'hao';
     }
   }
 };

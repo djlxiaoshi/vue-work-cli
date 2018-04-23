@@ -11,6 +11,8 @@ import Check from '@/components/auth/Check';
 import Settings from '@/components/auth/Settings';
 import Plugins from '@/components/plugins/Plugins';
 
+import globalData from '@/assets/js/global';
+
 /*
 * 配置字段说明 Vue-router 部分 参考此链接 https://router.vuejs.org/zh-cn/api/options.html#routes
 *icon：菜单图标
@@ -68,8 +70,14 @@ const sidebarConfig = [
   {
     path: '/plugins',
     name: 'Plugins',
+    label: '插件',
     component: Plugins,
-    hidden: true
+    permission: [1, 2, 3],
+    // 避免直接通过浏览器导航栏进入
+    beforeEnter: (to, from, next) => {
+      const permission = [1, 2, 3];
+      permission.includes(globalData.roleTypeId) ? next() : next('/');
+    }
   },
   {
     path: '**',
