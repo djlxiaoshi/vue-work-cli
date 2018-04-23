@@ -1,17 +1,17 @@
 <template>
   <div class="app-auth-page">
-    <AppTab
+    <AppHeader
       :tabList="[
-    {name: '我的权限', path: 'apply', active: true},
-    {name: '权限审批', path: 'check'},
-    {name: '权限设置', path: 'settings'}
-  ]"></AppTab>
+    {label: '我的权限', name: '我的权限', path: 'apply'},
+    {label: '权限审批', name: '权限审批', path: 'check'},
+    {label: '权限设置', name: '权限设置', path: 'settings'}
+  ]"></AppHeader>
     <router-view/>
   </div>
 </template>
 
 <script>
-import AppTab from '@/components/shared/app-tab/AppTab';
+import AppHeader from '@/components/app-header/AppHeader';
 export default {
   name: 'Auth',
   data () {
@@ -19,7 +19,7 @@ export default {
   },
   props: [],
   components: {
-    AppTab
+    AppHeader
   },
   methods: {}
 };

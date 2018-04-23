@@ -1,34 +1,37 @@
 <template>
-  <el-menu
+  <el-tabs
     class="app-tab"
-    :default-active="activeIndex"
-    :router="true"
-    mode="horizontal"
-    @select="handleSelect">
-    <el-menu-item
-      v-for="(tab, index) in tabList"
-      :key="index"
-      :index="index + ''"
-      :route="{path: tab['path'] }"
-      :disabled="tab['disabled']"
-    >{{ tab['name'] }}</el-menu-item>
-  </el-menu>
+    v-model="currentTabName"
+    @tab-click="handleSelect">
+    <el-tab-pane
+      :label="tab['label']"
+      v-for="tab in tabList"
+      :key="tab['name']"
+      :name="tab['name']"></el-tab-pane>
+  </el-tabs>
 </template>
 
 <script>
 export default {
   name: 'AppTab',
   data () {
-    return {};
+    return {
+      currentTabName: ''
+    };
   },
   props: {
     tabList: {
       type: Array,
       default: () => []
     },
-    activeIndex: {
+    activeTabName: {
       type: String,
-      default: '0'
+      default: ''
+    }
+  },
+  watch: {
+    activeTabName (val) {
+      this.currentTabName = val;
     }
   },
   methods: {
