@@ -2,10 +2,12 @@
   <div class="app-table">
     <div class="toolbar">
       <span class="title">{{ title }}</span>
+      <el-input placeholder="请输入内容" v-model="searchText" size="mini" class="search"></el-input>
     </div>
     <el-table
       v-loading="loading"
-      :data="showTableData"
+      :data="currentPageData"
+      :sortable="true"
       style="width: 100%"
       :border="border"
       :height="height">
@@ -15,16 +17,24 @@
         :fixed="columns['fixed']"
         :prop="columns['field']"
         :label="columns['label']"
-        :width="columns['width']">
+        :width="columns['width']"
+        :sortable="columns['field'] !== 'operate'"
+        :sort-by="sortBy"
+        header-align="center"
+        align="center">
         <template slot-scope="scope">
           <div v-if="columns['field'] === 'operate'">
-            <el-button type="info" plain size="mini" @click="details(scope.row)">详情</el-button>
-            <el-button type="warning" plain size="mini" @click="edit(scope.row)">编辑</el-button>
-            <el-button type="danger" plain size="mini" @click="del(scope.row)">删除</el-button>
+            <el-button type="info" plain size="mini" @click="details(scope.row)" v-if="hasDetails">详情</el-button>
+            <el-button type="warning" plain size="mini" @click="edit(scope.row)" v-if="hasEdit">编辑</el-button>
+            <el-button type="danger" plain size="mini" @click="del(scope.row)" v-if="hasDelete">删除</el-button>
             <slot name="operate" :row="scope.row"></slot>
           </div>
           <div v-else>
-            <template v-if="columns['filter']">
+            <template v-if="columns['slotName']">
+              <slot :name="columns['slotName']" :row="scope.row"></slot>
+            </template>
+            <template v-else-if="columns['formatter']">
+              {{ columns['formatter'](scope.row) }}
             </template>
             <template v-else>
               {{ scope.row[columns['field']] }}
@@ -33,12 +43,12 @@
         </template>
       </el-table-column>
     </el-table>
-    <footer class="footer" v-if="tableData.length > tableRows">
+    <footer class="footer">
       <el-pagination
         background
         layout="prev, pager, next"
         :page-size="tableRows"
-        :total="tableData.length"
+        :total="computedTableData.length"
         @current-change="pageChange($event)"
       >
       </el-pagination>
@@ -51,21 +61,73 @@ export default {
   name: 'AppTable',
   data () {
     return {
-      showTableData: this.tableData
+      currentPageData: [],
+      computedTableData: this.tableData || [],
+      total: this.tableData.length,
+      searchText: '',
+      noSearchFields: ['operate'] // 不参与查询的字段
     };
   },
-  props: ['tableColumns', 'tableData', 'height', 'border', 'loading', 'title', 'tableRows'],
+  props: {
+    tableColumns: {
+      type: Array,
+      default: () => []
+    },
+    tableData: {
+      type: Array,
+      default: () => []
+    },
+    height: {
+      type: Number
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    border: {
+      type: Boolean,
+      default: true
+    },
+    title: {
+      type: String,
+      default: ''
+    },
+    tableRows: {
+      type: Number,
+      default: 10
+    },
+    formatterHandler: {
+      type: Function
+    },
+    sortBy: {
+      type: String | Array | Function
+    },
+    hasDetails: {
+      type: Boolean,
+      default: false
+    },
+    hasEdit: {
+      type: Boolean,
+      default: false
+    },
+    hasDelete: {
+      type: Boolean,
+      default: false
+    }
+  },
   mounted () {
-    this.setCurrentPageTableData(0, this.tableRows);
+    this.setCurrentPageTableData(this.tableData, 0, this.tableRows);
   },
   methods: {
     pageChange (page) {
+      const data = this.computedTableData;
       const start = (page - 1) * this.tableRows;
       const end = page * this.tableRows;
-      this.setCurrentPageTableData(start, end);
+      this.setCurrentPageTableData(data, start, end);
+      this.$emit('onPageChange', page);
     },
-    setCurrentPageTableData (start, end) {
-      this.showTableData = this.tableData.slice(start, end);
+    setCurrentPageTableData (tableData, start, end) {
+      this.currentPageData = tableData.slice(start, end);
     },
     details (row) {
       this.$emit('onDetails', row);
@@ -75,6 +137,27 @@ export default {
     },
     del (row) {
       this.$emit('onDelete', row);
+    }
+  },
+  watch: {
+    searchText (value) {
+      if (value.trim() === '') {
+        this.computedTableData = this.tableData;
+      } else {
+        this.computedTableData = this.tableData.filter(row => {
+          return this.tableColumns.some(column => {
+            if (!this.noSearchFields.includes(column['field'])) {
+              return !!~row[column['field']].indexOf(value);
+            }
+            return false;
+          });
+        });
+      }
+      const data = this.computedTableData;
+      this.setCurrentPageTableData(data, 0, this.tableRows);
+    },
+    tableData (data) {
+      this.setCurrentPageTableData(data, 0, this.tableRows);
     }
   }
 };
@@ -91,6 +174,15 @@ export default {
       border: 1px solid #EBEEF5;
       .title {
         padding-left: 10px;
+        margin-right: 10px;
+        font-weight: 600;
+      }
+      .search{
+        flex: 0 0 200px;
+        height: 28px;
+        /deep/ .el-input__inner:focus {
+          border-color: #DCDFE6;
+        }
       }
     }
     .footer {

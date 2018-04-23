@@ -1,0 +1,16 @@
+.-etl-list-group {
+  >.list-item {
+    display: flex;
+    margin: 10px auto;
+    >.title {
+      flex: 0 0 150px;
+      margin-right: 15px;
+      font-weight: 700;
+      text-align: right;
+    }
+    >.value {
+      flex: 1;
+      text-align: left;
+    }
+  }
+}

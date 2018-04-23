@@ -1,11 +1,7 @@
 <template>
   <div class="app-auth-page">
     <AppHeader
-      :tabList="[
-    {label: '我的权限', name: '我的权限', path: 'apply'},
-    {label: '权限审批', name: '权限审批', path: 'check'},
-    {label: '权限设置', name: '权限设置', path: 'settings'}
-  ]"></AppHeader>
+      :tabList="tabList"></AppHeader>
     <router-view/>
   </div>
 </template>
@@ -15,7 +11,13 @@ import AppHeader from '@/components/app-header/AppHeader';
 export default {
   name: 'Auth',
   data () {
-    return {};
+    return {
+      tabList: [
+        {label: '我的权限', name: '我的权限', path: 'apply'},
+        {label: '权限审批', name: '权限审批', path: 'check'},
+        {label: '权限设置', name: '权限设置', path: 'settings'}
+      ]
+    };
   },
   props: [],
   components: {
