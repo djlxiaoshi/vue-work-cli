@@ -1,5 +1,5 @@
 <template>
-  <div class="interface-query">
+  <div class="interface-query -etl-body-container">
     <AppTable
       :title="'dsfgbdfr'"
       :tableRows="3"

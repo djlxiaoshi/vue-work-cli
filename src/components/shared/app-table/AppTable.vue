@@ -10,7 +10,11 @@
       :sortable="true"
       style="width: 100%"
       :border="border"
-      :height="height">
+      :height="height"
+      :header-cell-style="{
+        'background': '#EBEEF5',
+        'padding': '5px 0'
+      }">
       <el-table-column
         v-for="columns in tableColumns"
         :key="columns['field']"
@@ -172,18 +176,25 @@ export default {
       align-items: center;
       height: 35px;
       border: 1px solid #EBEEF5;
+      padding: 0 10px;
       .title {
-        padding-left: 10px;
         margin-right: 10px;
-        font-weight: 600;
       }
       .search{
         flex: 0 0 200px;
+        margin-left: auto;
         height: 28px;
-        /deep/ .el-input__inner:focus {
+        /deep/ .el-input__inner {
           border-color: #DCDFE6;
+          &:focus {
+            border-color: #DCDFE6;
+          }
         }
       }
+    }
+    /deep/ .el-table td{
+      padding: 5px 0;
+      color: rgba(0, 0, 0, 0.65);
     }
     .footer {
       display: flex;

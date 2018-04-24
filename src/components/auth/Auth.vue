@@ -5,7 +5,7 @@
         :tabList="tabList">
       </AppHeader>
     </div>
-    <div class="page-body">
+    <div class="-etl-body-container">
       <router-view/>
     </div>
   </div>
@@ -18,9 +18,9 @@ export default {
   data () {
     return {
       tabList: [
-        {label: '我的权限', name: '我的权限', path: 'apply'},
-        {label: '权限审批', name: '权限审批', path: 'check'},
-        {label: '权限设置', name: '权限设置', path: 'settings'}
+        {label: '我的权限', name: '我的权限', path: '/auth/apply'},
+        {label: '权限审批', name: '权限审批', path: '/auth/check', permission: [2, 3]},
+        {label: '权限设置', name: '权限设置', path: '/auth/settings', permission: [2, 3]}
       ]
     };
   },
@@ -34,8 +34,6 @@ export default {
 
 <style lang="scss" scoped>
   .app-auth-page {
-    .page-body {
-      padding: 20px;
-    }
+
   }
 </style>

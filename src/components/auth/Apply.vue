@@ -33,9 +33,10 @@
         </div>
       </li>
       <li class="list-item">
-        <span class="title">
-          <el-button  class="title" type="primary" size="small">主要按钮</el-button>
-        </span>
+        <span class="title"></span>
+        <div class="value">
+          <el-button  class="title" type="primary" size="small" plain>主要按钮</el-button>
+        </div>
       </li>
     </ul>
   </div>
@@ -64,7 +65,7 @@ export default {
  .auth-apply-page {
     .-etl-list-group {
       .list-item {
-        margin: 20px auto;
+        margin: 25px auto;
       }
     }
    .btn-wrap {

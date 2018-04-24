@@ -1,13 +1,15 @@
 <template>
-  <AppTable
-    title="数据库表配置"
-    :tableRows="3"
-    :tableColumns="tableColumns"
-    :tableData="tableData"
-    :hasEdit="true"
-    @onEdit="edit($event)"
-  >
-  </AppTable>
+  <div class="database-page -etl-body-container">
+    <AppTable
+      title="数据库表配置"
+      :tableRows="3"
+      :tableColumns="tableColumns"
+      :tableData="tableData"
+      :hasEdit="true"
+      @onEdit="edit($event)"
+    >
+    </AppTable>
+  </div>
 </template>
 
 <script>
