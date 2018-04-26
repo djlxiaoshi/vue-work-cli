@@ -1,15 +1,8 @@
 <template>
-  <AppTab
-  :tabList="[
-    {name: '我的权限'},
-    {name: '权限审批'},
-    {name: '权限设置'}
-  ]"
-  ></AppTab>
+  <div></div>
 </template>
 
 <script>
-import AppTab from '@/components/shared/app-tab/AppTab';
 
 export default {
   name: 'Plugins',
@@ -18,7 +11,6 @@ export default {
   },
   props: [],
   components: {
-    AppTab
   },
   methods: {}
 };
