@@ -1,18 +1,17 @@
 <template>
-  <el-row class="app-main">
-    <el-col :span="4" class="app-main-left" :class="{'collapse-width': isCollapse}">
-      <AppSidebar :isCollapse="isCollapse"></AppSidebar>
-    </el-col>
-    <el-col :span="20">
-      <div class="app-main-body">
-        <router-view/>
-      </div>
-    </el-col>
-  </el-row>
+  <div class="app-main">
+    <div class="app-main-left" :class="sidebarWidthClass">
+      <AppSidebar :isCollapse.sync="isCollapse"></AppSidebar>
+    </div>
+    <div class="app-main-body" :class="bodyWidthClass">
+      <router-view/>
+    </div>
+  </div>
 </template>
 
 <script>
 import AppSidebar from '@/components/app-sidebar/AppSidebar';
+
 export default {
   name: 'AppMain',
   data () {
@@ -29,6 +28,14 @@ export default {
       this.isCollapse = window.innerWidth < 960;
     });
   },
+  computed: {
+    bodyWidthClass () {
+      return this.isCollapse ? 'body-collapse-width' : 'body-width';
+    },
+    sidebarWidthClass () {
+      return this.isCollapse ? 'sidebar-collapse-width' : 'sidebar-width';
+    }
+  },
   methods: {}
 };
 </script>
@@ -37,6 +44,8 @@ export default {
   @import '../../assets/styles/index';
   .app-main {
     height: 100vh;
+    width: 100%;
+    display: flex;
     .app-main-left {
       height: 100%;
       background-color: $appSidebarBgColor;
@@ -44,8 +53,19 @@ export default {
         border: none;
       }
     }
-    .collapse-width {
-      width: 64px;
+    .sidebar-width {
+      width: 256px;
+    }
+    .sidebar-collapse-width {
+      flex: 0 0 64px;
+    }
+    .app-main-body {
+    }
+    .body-width {
+      width: calc(100% - 256px);
+    }
+    .body-collapse-width {
+      width: calc(100% - 64px);
     }
   }
 </style>

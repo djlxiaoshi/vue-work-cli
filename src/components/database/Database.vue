@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import AppTable from '@/components/shared/app-table/AppTable.vue';
 export default {
   name: 'Database',
   data () {
@@ -37,7 +36,6 @@ export default {
   },
   props: [],
   components: {
-    AppTable
   },
   methods: {
     edit (row) {

@@ -3,12 +3,12 @@
     <div class="toolbar">
       <span class="title">{{ title }}</span>
       <el-input placeholder="请输入内容" v-model="searchText" size="mini" class="search"></el-input>
+      <slot name="custom-toolbar"></slot>
     </div>
     <el-table
       v-loading="loading"
       :data="currentPageData"
       :sortable="true"
-      style="width: 100%"
       :border="border"
       :height="height"
       :header-cell-style="{
@@ -151,6 +151,7 @@ export default {
         this.computedTableData = this.tableData.filter(row => {
           return this.tableColumns.some(column => {
             if (!this.noSearchFields.includes(column['field'])) {
+              if (!row[column['field']]) return false;
               return !!~row[column['field']].indexOf(value);
             }
             return false;
@@ -170,7 +171,11 @@ export default {
 <style lang="scss" scoped>
   .app-table {
     position: relative;
-    box-shadow: rgba(0,0,0,.2) 0 2px 2px 0;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    font-size: 12px;
+    .el-table {
+      font-size: 12px;
+    }
     .toolbar {
       display: flex;
       align-items: center;
@@ -179,11 +184,19 @@ export default {
       padding: 0 10px;
       .title {
         margin-right: 10px;
+        min-width: 100px;
+        text-align: left;
+      }
+      >.-toolbar-right{
+        margin-left: auto;
+      }
+      .custom-toolbar-wrap {
+        margin: 0 10px;
       }
       .search{
-        flex: 0 0 200px;
-        margin-left: auto;
+        max-width: 200px;
         height: 28px;
+        margin: 0 10px 0 auto;
         /deep/ .el-input__inner {
           border-color: #DCDFE6;
           &:focus {
@@ -193,7 +206,7 @@ export default {
       }
     }
     /deep/ .el-table td{
-      padding: 5px 0;
+      padding: 7px 0;
       color: rgba(0, 0, 0, 0.65);
     }
     .footer {
@@ -201,6 +214,8 @@ export default {
       justify-content: center;
       align-items: center;
       height: 35px;
+      border-left: 1px solid #EBEEF5;
+      border-right: 1px solid #EBEEF5;
     }
   }
 </style>

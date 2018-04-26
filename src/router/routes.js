@@ -13,7 +13,7 @@ import Plugins from '@/components/plugins/Plugins';
 
 import AppException from '@/components/app-exception/AppException';
 
-import globalData from '@/assets/js/global';
+import globalDataService from '@/assets/js/global';
 
 /*
 * 配置字段说明 Vue-router 部分 参考此链接 https://router.vuejs.org/zh-cn/api/options.html#routes
@@ -23,6 +23,8 @@ import globalData from '@/assets/js/global';
 * childrenPosition: 如果有子路由，子路由是在侧边栏还是在顶部
 * permission: 拥有该菜单的角色ID
 * */
+
+const globalData = globalDataService.getGlobalData();
 
 const sidebarConfig = [
   {
@@ -57,10 +59,10 @@ const sidebarConfig = [
         name: 'Check',
         label: '权限审核',
         component: Check,
-        permission: [2, 3],
+        permission: [1, 2, 3],
         // 避免直接通过浏览器导航栏进入
         beforeEnter: (to, from, next) => {
-          const permission = [2, 3];
+          const permission = [1, 2, 3];
           permission.includes(globalData.roleTypeId) ? next() : next({
             name: 'Exception',
             params: {
@@ -76,10 +78,10 @@ const sidebarConfig = [
         name: 'Settings',
         label: '权限设置',
         component: Settings,
-        permission: [2, 3],
+        permission: [1, 2, 3],
         // 避免直接通过浏览器导航栏进入
         beforeEnter: (to, from, next) => {
-          const permission = [2, 3];
+          const permission = [1, 2, 3];
           permission.includes(globalData.roleTypeId) ? next() : next({
             name: 'Exception',
             params: {

@@ -23,7 +23,7 @@ export default {
   name: 'AppHeader',
   data () {
     return {
-      globalData: globalData
+      globalData: globalData.getGlobalData()
     };
   },
   props: {

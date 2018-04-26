@@ -6,6 +6,17 @@ body {
   padding: 20px;
 }
 
+/deep/ .el-dialog {
+  .el-dialog__header {
+    padding: 15px;
+    border-bottom: 1px solid #EBEEF5;
+  }
+  .el-dialog__footer {
+    border-top: 1px solid #EBEEF5;
+    padding: 10px 20px;
+  }
+}
+
 .-etl-list-group {
   >.list-item {
     display: flex;
