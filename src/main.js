@@ -6,12 +6,16 @@ import App from './App';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 
-import router from './router';
-// 初始化css
-import './assets/styles/initialize.css';
 // 引入Element-UI
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import router from './router';
+
+// element-ui 默认样式文件
+// import 'element-ui/lib/theme-chalk/index.css';
+// element-ui 自定义样式文件
+import '../theme/index.css';
+// 初始化css
+import './assets/styles/initialize.css';
 // 引入font-awesome
 import 'font-awesome/css/font-awesome.css';
 

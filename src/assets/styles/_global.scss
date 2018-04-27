@@ -1,3 +1,4 @@
+@import "themes";
 body {
   font-size: 14px;
 }
@@ -5,15 +6,16 @@ body {
 /deep/ .el-dialog {
   .el-dialog__header {
     padding: 15px;
-    border-bottom: 1px solid #EBEEF5;
+    border-bottom: 1px solid $appBorderColor;
   }
   .el-dialog__footer {
-    border-top: 1px solid #EBEEF5;
+    border-top: 1px solid $appBorderColor;
     padding: 10px 20px;
   }
 }
 
 .-etl-list-group {
+  color: $appFontColor;
   >.list-item {
     display: flex;
     margin: 10px auto;

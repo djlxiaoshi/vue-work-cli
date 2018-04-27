@@ -3,7 +3,7 @@
     <div class="toolbar">
       <span class="title">{{ title }}</span>
       <el-input placeholder="请输入内容" v-model="searchText" size="mini" class="search"></el-input>
-      <div class="custom-toolbar"><slot name="custom-toolbar"></slot></div>
+      <slot name="custom-toolbar"></slot>
     </div>
     <el-table
       v-loading="loading"
@@ -180,7 +180,7 @@ export default {
       display: flex;
       align-items: center;
       height: 35px;
-      border: 1px solid #EBEEF5;
+      border: 1px solid $appBorderColor;
       padding: 0 10px;
       .title {
         margin-right: 10px;
@@ -191,7 +191,7 @@ export default {
         margin-left: auto;
       }
       .custom-toolbar-wrap {
-        margin: 0 10px;
+        margin: 0 0 0 10px;
       }
       .search{
         max-width: 200px;
@@ -210,15 +210,14 @@ export default {
     }
     /deep/ .el-table td{
       padding: 7px 0;
-      color: rgba(0, 0, 0, 0.65);
     }
     .footer {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 35px;
-      border-left: 1px solid #EBEEF5;
-      border-right: 1px solid #EBEEF5;
+      border-left: 1px solid $appBorderColor;
+      border-right: 1px solid $appBorderColor;
     }
   }
 </style>

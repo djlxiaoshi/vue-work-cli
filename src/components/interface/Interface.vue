@@ -7,7 +7,7 @@
       :tableData="tableData"
     >
       <template slot="custom-toolbar">
-        <el-button type="primary" size="mini" @click="openConfigDialog()">新增自定义接口</el-button>
+        <el-button type="primary" size="mini" @click="openConfigDialog()" class="custom-toolbar-wrap">新增自定义接口</el-button>
       </template>
     </AppTable>
 
@@ -112,7 +112,7 @@
             :tableData="configDialogTableData"
           >
             <template slot="custom-toolbar">
-              <el-button type="primary" size="mini">新增参数</el-button>
+              <el-button type="primary" size="mini" class="custom-toolbar-wrap">新增参数</el-button>
             </template>
           </AppTable>
         </div>
@@ -206,7 +206,7 @@ export default {
   /deep/ .config-dialog {
     .dialog-body {
       .-etl-list-group {
-        border: 1px solid #EBEEF5;
+        border: 1px solid $appBorderColor;
         box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
         display: flex;
         flex-flow: wrap;

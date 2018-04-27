@@ -71,7 +71,7 @@ export default {
       cursor: pointer;
       text-align: center;
       &:not(:last-of-type) {
-        border-bottom: 1px solid #EBEEF5;
+        border-bottom: 1px solid $appBorderColor;
       }
       &:hover {
         color: #EAA23C;
@@ -82,11 +82,7 @@ export default {
     display: flex;
     border: solid 1px #e6e6e6;
     .header-menu {
-      /deep/ .el-menu {
-        .el-menu--horizontal {
-          border: none;
-        }
-      }
+      border: none;
     }
     .header-user {
       margin: 0 50px 0 auto;
