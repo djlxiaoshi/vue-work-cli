@@ -1,5 +1,5 @@
 <template>
-  <div class="interface-query -etl-body-container">
+  <div class="interface-query">
     <AppTable
       :title="'接口查询'"
       :tableRows="3"

@@ -3,7 +3,7 @@
     <div class="toolbar">
       <span class="title">{{ title }}</span>
       <el-input placeholder="请输入内容" v-model="searchText" size="mini" class="search"></el-input>
-      <slot name="custom-toolbar"></slot>
+      <div class="custom-toolbar"><slot name="custom-toolbar"></slot></div>
     </div>
     <el-table
       v-loading="loading"
@@ -172,9 +172,9 @@ export default {
   .app-table {
     position: relative;
     box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
-    font-size: 12px;
+    font-size: 14px;
     .el-table {
-      font-size: 12px;
+      font-size: 14px;
     }
     .toolbar {
       display: flex;
@@ -196,13 +196,16 @@ export default {
       .search{
         max-width: 200px;
         height: 28px;
-        margin: 0 10px 0 auto;
+        margin: 0 0 0 auto;
         /deep/ .el-input__inner {
           border-color: #DCDFE6;
           &:focus {
             border-color: #DCDFE6;
           }
         }
+      }
+      .custom-toolbar {
+        margin-left:10px;
       }
     }
     /deep/ .el-table td{

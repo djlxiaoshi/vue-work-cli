@@ -1,5 +1,5 @@
 <template>
-  <div class="database-page -etl-body-container">
+  <div class="database-page">
     <AppTable
       title="数据库表配置"
       :tableRows="3"

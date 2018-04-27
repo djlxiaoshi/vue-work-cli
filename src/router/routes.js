@@ -26,7 +26,7 @@ import globalDataService from '@/assets/js/global';
 
 const globalData = globalDataService.getGlobalData();
 
-const sidebarConfig = [
+const mainRoutes = [
   {
     path: '/interface',
     name: 'Interface',
@@ -78,10 +78,10 @@ const sidebarConfig = [
         name: 'Settings',
         label: '权限设置',
         component: Settings,
-        permission: [1, 2, 3],
+        permission: [2, 3],
         // 避免直接通过浏览器导航栏进入
         beforeEnter: (to, from, next) => {
-          const permission = [1, 2, 3];
+          const permission = [2, 3];
           permission.includes(globalData.roleTypeId) ? next() : next({
             name: 'Exception',
             params: {
@@ -131,7 +131,7 @@ const routes = [
   {
     path: '/',
     component: AppMain,
-    children: sidebarConfig
+    children: mainRoutes
   },
   {
     path: '**',
@@ -148,4 +148,4 @@ const routes = [
   }
 ];
 
-export { routes, sidebarConfig };
+export { routes, mainRoutes };

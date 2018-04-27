@@ -1,38 +1,53 @@
 <template>
   <div class="app-main">
-    <div class="app-main-left" :class="sidebarWidthClass">
+    <div class="app-main-left" :class="leftWidthClass">
       <AppSidebar :isCollapse.sync="isCollapse"></AppSidebar>
     </div>
-    <div class="app-main-body" :class="bodyWidthClass">
-      <router-view/>
+    <div class="app-main-right" :class="rightWidthClass">
+      <div class="header">
+        <AppHeader :tabList="topNavList"></AppHeader>
+      </div>
+      <div class="body">
+        <router-view/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import AppSidebar from '@/components/app-sidebar/AppSidebar';
+import AppHeader from '@/components/app-header/AppHeader';
+import globalDataService from '@/assets/js/global';
 
 export default {
   name: 'AppMain',
   data () {
     return {
-      isCollapse: window.innerWidth < 960
+      isCollapse: window.innerWidth < 960,
+      topNavList: []
     };
   },
   props: [],
   components: {
-    AppSidebar
+    AppSidebar,
+    AppHeader
   },
   mounted () {
     window.addEventListener('resize', (event) => {
       this.isCollapse = window.innerWidth < 960;
     });
   },
+  created () {
+    this.topNavList = globalDataService.getGlobalHeader();
+    globalDataService.onGlobalHeaderChange().subscribe(data => {
+      this.topNavList = data;
+    });
+  },
   computed: {
-    bodyWidthClass () {
-      return this.isCollapse ? 'body-collapse-width' : 'body-width';
+    rightWidthClass () {
+      return this.isCollapse ? 'right-collapse-width' : 'right-width';
     },
-    sidebarWidthClass () {
+    leftWidthClass () {
       return this.isCollapse ? 'sidebar-collapse-width' : 'sidebar-width';
     }
   },
@@ -53,18 +68,21 @@ export default {
         border: none;
       }
     }
+    .app-main-right {
+      .body {
+        padding: 20px;
+      }
+    }
     .sidebar-width {
       width: 256px;
     }
     .sidebar-collapse-width {
       flex: 0 0 64px;
     }
-    .app-main-body {
-    }
-    .body-width {
+    .right-width {
       width: calc(100% - 256px);
     }
-    .body-collapse-width {
+    .right-collapse-width {
       width: calc(100% - 64px);
     }
   }

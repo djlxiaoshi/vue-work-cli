@@ -2,8 +2,10 @@
  * @Author JohnLi
  * @Date 2018/4/23 17:15
  */
-
+import { Subject } from 'rxjs';
 class GlobalDataService {
+  globalheaderChange = new Subject();
+  globalHeader = [];
   globalData = {
     roleTypeId: 1
   };
@@ -14,12 +16,19 @@ class GlobalDataService {
   getGlobalData () {
     return this.globalData;
   }
-  setGlobalHeaders (headers) {
+  setGlobalHeader (data) {
+    this.globalHeader = data;
   }
-  // onGlobalHeaderChange () {
-  //   Vue.$on('globalHeaderChange', );
-  // }
+  getGlobalHeader () {
+    return this.globalHeader;
+  }
+  globalHeaderChange (header) {
+    this.globalheaderChange.next(header);
+  }
+  onGlobalHeaderChange () {
+    return this.globalheaderChange;
+  }
 }
 
-const globalData = new GlobalDataService();
+const globalData = new GlobalDataService(); // export 输出的都是同一个实例
 export default globalData;

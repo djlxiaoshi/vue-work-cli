@@ -1,15 +1,8 @@
 <template>
   <div class="app-auth-page">
-    <div class="page-header">
-      <AppHeader
-        :tabList="tabList">
-      </AppHeader>
-    </div>
-    <div class="-etl-body-container">
-      <!--<keep-alive include="Apply">-->
-        <router-view/>
-      <!--</keep-alive>-->
-    </div>
+    <keep-alive include="Apply">
+      <router-view/>
+    </keep-alive>
   </div>
 </template>
 

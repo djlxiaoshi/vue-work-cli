@@ -58,14 +58,14 @@
 </template>
 
 <script>
-import { sidebarConfig } from '@/router/routes';
+import { mainRoutes } from '@/router/routes';
 import globalData from '@/assets/js/global';
 
 export default {
   name: 'AppSidebar',
   data () {
     return {
-      routesConfig: sidebarConfig,
+      routesConfig: mainRoutes,
       globalData: globalData
     };
   },
