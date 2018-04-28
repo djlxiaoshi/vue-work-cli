@@ -6,8 +6,13 @@ import App from './App';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 
-// 引入Element-UI
-import ElementUI from 'element-ui';
+// 引入Element-UI  全部加载
+// import ElementUI from 'element-ui';
+
+// 按需加载
+import { Button, Select, Option, Table, TableColumn, Input, RadioButton,
+  RadioGroup, Tabs, Popover, Menu, MenuItem, Submenu, Card, Dialog, Pagination, Loading } from 'element-ui';
+
 import router from './router';
 
 // element-ui 默认样式文件
@@ -20,7 +25,28 @@ import './assets/styles/initialize.css';
 import 'font-awesome/css/font-awesome.css';
 
 Vue.config.productionTip = false;
-Vue.use(ElementUI);
+// Vue.use(ElementUI);
+
+Vue.use(Button);
+Vue.use(Select);
+Vue.use(Option);
+Vue.use(Input);
+Vue.use(Table);
+Vue.use(TableColumn);
+Vue.use(Tabs);
+Vue.use(Popover);
+Vue.use(Menu);
+Vue.use(MenuItem);
+Vue.use(Submenu);
+Vue.use(Card);
+Vue.use(RadioButton);
+Vue.use(RadioGroup);
+Vue.use(Dialog);
+Vue.use(Pagination);
+
+Vue.use(Loading.directive);
+
+Vue.prototype.$loading = Loading.service;
 
 // 这里设置路由守卫，只有等获取到用户信息之后，才能够进入应用
 // 所以这里整个应用要包裹在一个路由之下

@@ -69,6 +69,9 @@ export default {
       }
     }
     .app-main-right {
+      .header {
+        height: 60px;
+      }
       .body {
         padding: 20px;
       }

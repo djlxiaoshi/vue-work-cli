@@ -46,13 +46,35 @@ const mainRoutes = [
     icon: 'fa-th-large',
     label: '权限管理',
     component: Auth,
-    childrenPosition: 'top',
+    childrenPosition: 'left',
+    beforeEnter: (to, from, next) => {
+      to.params.isOpen = true;
+      next();
+    },
     children: [
       {
         path: 'apply',
         name: 'Apply',
         label: '权限申请',
-        component: Apply
+        component: Apply,
+        childrenPosition: 'top',
+        beforeEnter: (to, from, next) => {
+          to.params.isActive = true;
+          next();
+        },
+        children: [
+          {
+            path: 'check2',
+            name: 'Check2',
+            label: '权限审核2',
+            component: Check
+          },
+          {
+            path: '',
+            redirect: 'check2',
+            hidden: true
+          }
+        ]
       },
       {
         path: 'check',

@@ -1,7 +1,6 @@
 <template>
   <div class="app-sidebar">
     <h3 class="header">
-      <!--<img src="@/assets/images/logo.png" alt="ETL管理系统" width="80" v-if="!isCollapse">-->
       <span class="logo">{{ isCollapse ? 'ETL' : ''}}</span>
       <span v-if="!isCollapse" class="text">ETL管理系统</span>
     </h3>
@@ -9,9 +8,9 @@
       :router="true"
       :collapse-transition="false"
       background-color="#001529"
-      text-color="#fff"
-      :default-active="$route.path"
+      text-color="#a3b0bf"
       active-text-color="#ffd04b"
+      :default-openeds="getDefaultOpens"
       class="body"
       :collapse="isCollapse" >
       <template v-for="(route) in routesConfig">
@@ -22,31 +21,28 @@
                       v-if="route['children'] && route['childrenPosition'] === 'left'"
                       >
             <template slot="title">
-              <div class="etl-menu-item">
                 <i class="fa icon" :class="route['icon']"></i>
                 <span slot="title">{{route['label']}}</span>
-              </div>
             </template>
             <el-menu-item
               v-for="(child) in route['children']"
               v-if="!child['hidden'] && (!child['permission'] || child['permission'].includes(globalData['roleTypeId']))"
+              :class="{'is-active': isActive(`${route.path}/${child['path']}`)}"
               :index="`${route.path}/${child['path']}`"
               :key="`${route.path}/${child['path']}`"
+              :route="{path: `${route.path}/${child['path']}`}"
             >
-              <div class="etl-menu-item">
                 <i class="fa icon" :class="child['icon']" :title="route['label']"></i>
                 <span slot="title">{{child['label']}}</span>
-              </div>
             </el-menu-item>
           </el-submenu>
           <el-menu-item
             v-else
+            :class="{'is-active': isActive(route.path)}"
             :index="route.path"
             :key="route.path">
-            <div class="etl-menu-item">
               <i class="fa icon" :class="route['icon']" :title="route['label']"></i>
               <span slot="title">{{route['label']}}</span>
-            </div>
           </el-menu-item>
         </template>
       </template>
@@ -59,20 +55,38 @@
 
 <script>
 import { mainRoutes } from '@/router/routes';
-import globalData from '@/assets/js/global';
+import globalDataService from '@/assets/js/global';
 
 export default {
   name: 'AppSidebar',
   data () {
     return {
       routesConfig: mainRoutes,
-      globalData: globalData
+      globalData: globalDataService.getGlobalData(),
+      defaultOpens: []
     };
   },
   props: ['isCollapse'],
+  created () {
+    console.log(this.$route);
+  },
   methods: {
     toggleCollapse () {
       this.$emit('update:isCollapse', !this.isCollapse);
+    },
+    isActive (path) {
+      const matched = this.$route.matched;
+      return matched.some(item => {
+        return item.path === path;
+      });
+    }
+  },
+  computed: {
+    getDefaultOpens () {
+      const matched = this.$route.matched;
+      return matched.map(item => {
+        return item.path;
+      });
     }
   }
 };
@@ -87,36 +101,46 @@ export default {
       flex: 0 0 60px;
       display: flex;
       align-items: center;
-      padding: 0 16px;
       color: #fff;
       font-size: 18px;
       background-color: black;
       .logo {
-        flex: 0 0 40px;
+        flex: 0 0 64px;
       }
       .text {
         flex: 1;
         text-align: left;
       }
     }
-    .body {
+    /deep/ .el-menu {
       flex: 1;
       border-right: none;
-      .etl-menu-item {
+      .el-menu-item {
         display: flex;
         align-items: center;
-        height: 100%;
+        padding: 0 !important;
         i.icon {
-          text-align: left;
-          flex: 0 0 40px;
-        }
-        span {
-          flex: 1;
-          text-align: left;
+          flex: 0 0 64px;
         }
       }
-      .el-menu-item {
-        padding-left: 20px !important;
+      .el-submenu {
+        .el-submenu__title {
+          display: flex;
+          align-items: center;
+          padding: 0 !important;
+          i.icon {
+            flex: 0 0 64px;
+            text-align: center;
+          }
+        }
+      }
+      .is-opened {
+        .el-submenu__title {
+          color: #fff !important;
+        }
+      }
+      .is-active {
+        color: #fff !important;
       }
     }
     .footer {

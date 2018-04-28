@@ -81,6 +81,7 @@ export default {
   .app-header {
     display: flex;
     border: solid 1px #e6e6e6;
+    height: 100%;
     .header-menu {
       border: none;
     }
