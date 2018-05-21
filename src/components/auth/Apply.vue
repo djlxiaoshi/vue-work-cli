@@ -50,7 +50,6 @@
 <script>
 import { roleConfig } from '@/config/config';
 import globalDataService from '@/assets/js/globalDataService';
-import Http from '@/assets/js/utils/http';
 import { Notification } from 'element-ui';
 const globalData = globalDataService.getGlobalData();
 export default {
@@ -75,12 +74,12 @@ export default {
   },
   methods: {
     getBusinessList () {
-      Http.get('business/list/', {type: 'auth'}).then(res => {
+      this.$http.get('business/list/', {type: 'auth'}).then(res => {
         this.businessList = res.data;
       });
     },
     getMyBusinessList () {
-      Http.get('business/list/', {type: 'my'}).then(data => {
+      this.$http.get('business/list/', {type: 'my'}).then(data => {
         this.myBusinessList = data.data;
       });
     },
@@ -113,8 +112,7 @@ export default {
       return true;
     },
     sendRequest (params) {
-      Http.post('auth/apply/', params).then(res => {
-        debugger;
+      this.$http.post('auth/apply/', params).then(res => {
       });
     }
   },

@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import Http from '@/assets/js/utils/http';
 export default {
   name: 'MyApplication',
   data () {
@@ -34,7 +33,7 @@ export default {
   },
   methods: {
     getApplyList () {
-      Http.get('auth/my/apply/').then(data => {
+      this.$http.get('auth/my/apply/').then(data => {
         this.myApplyList = data.data;
       });
     }

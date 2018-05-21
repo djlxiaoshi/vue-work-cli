@@ -21,6 +21,7 @@ export default {
         },
         {
           type: 'multiSelect',
+          defaultSelectedNumber: 1,
           labelName: 'bname',
           valueName: 'id',
           query: {

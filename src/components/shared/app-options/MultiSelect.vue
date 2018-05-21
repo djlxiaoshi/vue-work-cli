@@ -10,7 +10,7 @@
           v-model="searchText">
         </el-input>
       </div>
-      <div class="body">
+      <div class="body" v-if="option.list && option.list.length">
         <el-checkbox-group v-model="option.selected" @change="selectChange($event)">
           <el-checkbox
             v-for="item in option.list"
@@ -22,7 +22,7 @@
         </el-checkbox-group>
       </div>
     </div>
-    <el-button slot="reference" size="mini">数据筛选</el-button>
+    <el-button slot="reference" size="mini">{{ title }}</el-button>
   </el-popover>
 </template>
 
@@ -35,7 +35,21 @@ export default {
       checkAll: false
     };
   },
-  props: ['option'],
+  props: {
+    option: {
+      type: Object,
+      default: () => {
+        return {
+          list: [],
+          defaultSelectedNumber: 1
+        };
+      }
+    },
+    title: {
+      type: String,
+      default: '数据筛选'
+    }
+  },
   created () {
     this.init();
   },
@@ -106,6 +120,9 @@ export default {
         const label = (item[labelName] + '').trim();
         item['_hidden'] = !~label.indexOf(text);
       });
+    },
+    option () {
+      this.init();
     }
   }
 };
