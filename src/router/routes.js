@@ -7,13 +7,15 @@ import Interface from '@/components/interface/Interface';
 import Database from '@/components/database/Database';
 import Auth from '@/components/auth/Auth';
 import Apply from '@/components/auth/Apply';
+import MyApplication from '@/components/auth/MyApplication';
 import Check from '@/components/auth/Check';
 import Settings from '@/components/auth/Settings';
+import BusinessList from '@/components/business-manage/BusinessList';
 import Plugins from '@/components/plugins/Plugins';
 
-import AppException from '@/components/app-exception/AppException';
+import NotFound from '@/components/shared/app-exception/NotFound';
 
-import globalDataService from '@/assets/js/global';
+import globalDataService from '@/assets/js/globalDataService';
 
 /*
 * 配置字段说明 Vue-router 部分 参考此链接 https://router.vuejs.org/zh-cn/api/options.html#routes
@@ -46,52 +48,31 @@ const mainRoutes = [
     icon: 'fa-th-large',
     label: '权限管理',
     component: Auth,
-    childrenPosition: 'left',
-    beforeEnter: (to, from, next) => {
-      to.params.isOpen = true;
-      next();
-    },
+    childrenPosition: 'top',
     children: [
       {
         path: 'apply',
         name: 'Apply',
         label: '权限申请',
-        component: Apply,
-        childrenPosition: 'top',
-        beforeEnter: (to, from, next) => {
-          to.params.isActive = true;
-          next();
-        },
-        children: [
-          {
-            path: 'check2',
-            name: 'Check2',
-            label: '权限审核2',
-            component: Check
-          },
-          {
-            path: '',
-            redirect: 'check2',
-            hidden: true
-          }
-        ]
+        component: Apply
+      },
+      {
+        path: 'myApplication',
+        name: 'myApplication',
+        label: '我的申请',
+        component: MyApplication
       },
       {
         path: 'check',
         name: 'Check',
-        label: '权限审核',
+        label: '我的审核',
         component: Check,
-        permission: [1, 2, 3],
+        permission: [1, 2, 3, 99],
         // 避免直接通过浏览器导航栏进入
         beforeEnter: (to, from, next) => {
-          const permission = [1, 2, 3];
-          permission.includes(globalData.roleTypeId) ? next() : next({
-            name: 'Exception',
-            params: {
-              type: 0,
-              redirectTo: '/',
-              isAllowed: true
-            }
+          const permission = [1, 2, 3, 99];
+          permission.includes(globalData.userMsg.role_id) ? next() : next({
+            path: '/'
           });
         }
       },
@@ -100,17 +81,12 @@ const mainRoutes = [
         name: 'Settings',
         label: '权限设置',
         component: Settings,
-        permission: [2, 3],
+        permission: [2, 3, 99],
         // 避免直接通过浏览器导航栏进入
         beforeEnter: (to, from, next) => {
-          const permission = [2, 3];
-          permission.includes(globalData.roleTypeId) ? next() : next({
-            name: 'Exception',
-            params: {
-              type: 1,
-              redirectTo: '/',
-              isAllowed: true
-            }
+          const permission = [2, 3, 99];
+          permission.includes(globalData.userMsg.role_id) ? next() : next({
+            path: '/'
           });
         }
       },
@@ -122,24 +98,28 @@ const mainRoutes = [
     ]
   },
   {
+    path: '/business',
+    name: 'Business',
+    icon: 'fa-briefcase',
+    label: '业务管理',
+    component: BusinessList,
+    permission: [99],
+    // 避免直接通过浏览器导航栏进入
+    beforeEnter: (to, from, next) => {
+      const permission = [99];
+      permission.includes(globalData.userMsg.role_id) ? next() : next('/');
+    }
+  },
+  {
     path: '/plugins',
     name: 'Plugins',
     label: '插件',
     component: Plugins,
-    permission: [1, 2, 3],
+    permission: [1, 2, 3, 99],
     // 避免直接通过浏览器导航栏进入
     beforeEnter: (to, from, next) => {
-      const permission = [1, 2, 3];
-      permission.includes(globalData.roleTypeId) ? next() : next('/');
-    }
-  },
-  {
-    path: '/exception',
-    name: 'Exception',
-    component: AppException,
-    hidden: true,
-    beforeEnter: (to, from, next) => {
-      to.params.isAllowed ? next() : next('/');
+      const permission = [1, 2, 3, 99];
+      permission.includes(globalData.userMsg.role_id) ? next() : next('/');
     }
   },
   {
@@ -157,16 +137,7 @@ const routes = [
   },
   {
     path: '**',
-    beforeEnter: (to, from, next) => {
-      next({
-        name: 'Exception',
-        params: {
-          type: 1,
-          redirectTo: '/',
-          isAllowed: true
-        }
-      });
-    }
+    component: NotFound
   }
 ];
 

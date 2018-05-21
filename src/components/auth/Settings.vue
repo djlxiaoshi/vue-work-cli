@@ -1,7 +1,7 @@
 <template>
   <div class="auth-settings-page">
     <AppTable
-      title="权限设置"
+      title="用户列表"
       :tableRows="3"
       :border="true"
       :tableColumns="tableColumns"
@@ -56,17 +56,12 @@ export default {
   data () {
     return {
       tableColumns: [
-        { label: '用户名', field: 'username' },
-        { label: '角色', field: 'role' },
-        { label: '已有业务', field: 'business' },
-        { label: '操作', field: 'operate', width: 300 }
+        { label: '用户工号', field: 'workid' },
+        { label: '用户名', field: 'user_cname' },
+        { label: '用户英文名', field: 'user_name' },
+        { label: '角色名称', field: 'role_name' }
       ],
-      tableData: [
-        { username: '王小虎', role: '管理员', business: '数据支付部' },
-        { username: '王小虎1', role: '业务管理', business: '数据支付部' },
-        { username: '王小虎2', role: '普通用户', business: '数据支付部' },
-        { username: '王小虎3', role: '管理员', business: '数据支付部' }
-      ],
+      tableData: [],
       dialogVisible: false,
       currentRow: {},
       role: '',
@@ -81,10 +76,18 @@ export default {
   props: [],
   components: {
   },
+  mounted () {
+    this.getAdminList();
+  },
   methods: {
     edit (row) {
       this.currentRow = row;
       this.dialogVisible = true;
+    },
+    getAdminList () {
+      this.$http.get('user/admin/list/').then(data => {
+        this.tableData = data.data;
+      });
     }
   }
 };

@@ -1,22 +1,6 @@
 <template>
   <div class="app-plugins">
-    <el-menu :default-active="activeIndex" class="el-menu-demo"  @select="handleSelect">
-      <el-menu-item index="1">处理中心</el-menu-item>
-      <el-submenu index="/2">
-        <template slot="title">我的工作台</template>
-        <el-menu-item index="f/2/drh1">选项1</el-menu-item>
-        <el-menu-item index="f/2/sdfb2">选项2</el-menu-item>
-        <el-menu-item index="fd/2sdfgb3">选项3</el-menu-item>
-        <el-submenu index="2-4">
-          <template slot="title">选项4</template>
-          <el-menu-item index="2-4-1">选项1</el-menu-item>
-          <el-menu-item index="2-4-2">选项2</el-menu-item>
-          <el-menu-item index="2-4-3">选项3</el-menu-item>
-        </el-submenu>
-      </el-submenu>
-      <el-menu-item index="3" disabled>消息中心</el-menu-item>
-      <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
-    </el-menu>
+    <AppOptions :options="options" @optionsSelectedChange="change($event)" @optionsReady="optionsReady()"></AppOptions>
   </div>
 </template>
 
@@ -24,13 +8,82 @@
 export default {
   data () {
     return {
-      activeIndex: '1',
-      activeIndex2: '1'
+      options: [
+        {
+          type: 'dropdown',
+          labelName: 'bname',
+          valueName: 'id',
+          query: {
+            url: 'business/list/',
+            params: {type: 'my'}
+          },
+          sync: true
+        },
+        {
+          type: 'multiSelect',
+          labelName: 'bname',
+          valueName: 'id',
+          query: {
+            url: 'business/list/',
+            params: {type: 'my'}
+          },
+          sync: true
+        },
+        {
+          type: 'singleSelect',
+          horizontalCount: 2,
+          list: [
+            {label: '选项一', value: 0},
+            {label: '选项二', value: 1},
+            {label: '选项三', value: 2}
+          ]
+        },
+        {
+          type: 'cascade',
+          selected: [1],
+          list: [{
+            value: 'zhinan',
+            label: '指南',
+            children: [{
+              value: 'shejiyuanze',
+              label: '设计原则',
+              children: [{
+                value: 'yizhi',
+                label: '一致'
+              }, {
+                value: 'fankui',
+                label: '反馈'
+              }, {
+                value: 'xiaolv',
+                label: '效率'
+              }, {
+                value: 'kekong',
+                label: '可控'
+              }]
+            }, {
+              value: 'daohang',
+              label: '导航',
+              children: [{
+                value: 'cexiangdaohang',
+                label: '侧向导航'
+              }, {
+                value: 'dingbudaohang',
+                label: '顶部导航'
+              }]
+            }]
+          }]
+        }
+      ]
     };
   },
+  mounted () {
+  },
+  components: {
+  },
   methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+    change (data) {
+    },
+    optionsReady () {
     }
   }
 };

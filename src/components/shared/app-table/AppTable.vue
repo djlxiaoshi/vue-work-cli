@@ -2,6 +2,10 @@
   <div class="app-table">
     <div class="toolbar">
       <span class="title">{{ title }}</span>
+      <AppOptions
+        v-bind="$attrs"
+        v-on="listeners"
+      ></AppOptions>
       <el-input placeholder="请输入内容" v-model="searchText" size="mini" class="search"></el-input>
       <slot name="custom-toolbar"></slot>
     </div>
@@ -21,16 +25,17 @@
         :fixed="columns['fixed']"
         :prop="columns['field']"
         :label="columns['label']"
-        :width="columns['width']"
+        :min-width="columns['width'] + 'px'"
+        :show-overflow-tooltip="true"
         :sortable="columns['field'] !== 'operate'"
         :sort-by="sortBy"
         header-align="center"
         align="center">
         <template slot-scope="scope">
           <div v-if="columns['field'] === 'operate'">
-            <el-button type="info" plain size="mini" @click="details(scope.row)" v-if="hasDetails">详情</el-button>
-            <el-button type="warning" plain size="mini" @click="edit(scope.row)" v-if="hasEdit">编辑</el-button>
-            <el-button type="danger" plain size="mini" @click="del(scope.row)" v-if="hasDelete">删除</el-button>
+            <el-button type="info" icon="el-icon-message" class="etl-btn mini" @click="details(scope.row)" v-if="hasDetails" title="详情"></el-button>
+            <el-button type="warning" icon="el-icon-edit" class="etl-btn mini" @click="edit(scope.row)" v-if="hasEdit" title="编辑"></el-button>
+            <el-button type="danger" icon="el-icon-delete" class="etl-btn mini" @click="del(scope.row)" v-if="hasDelete" title="删除"></el-button>
             <slot name="operate" :row="scope.row"></slot>
           </div>
           <div v-else>
@@ -41,7 +46,7 @@
               {{ columns['formatter'](scope.row) }}
             </template>
             <template v-else>
-              {{ scope.row[columns['field']] }}
+              <span :class="{'-include': setIncludeColor(scope.row[columns['field']])}"> {{ scope.row[columns['field']] }} </span>
             </template>
           </div>
         </template>
@@ -61,12 +66,13 @@
 </template>
 
 <script>
+import { getTableDataSize } from 'gettabledatasize';
 export default {
   name: 'AppTable',
   data () {
     return {
       currentPageData: [],
-      computedTableData: this.tableData || [],
+      computedTableData: [],
       total: this.tableData.length,
       searchText: '',
       noSearchFields: ['operate'] // 不参与查询的字段
@@ -119,6 +125,11 @@ export default {
       default: false
     }
   },
+  created () {
+    getTableDataSize(this.tableColumns, this.tableData, {
+      columnRedundancyWidth: 60
+    });
+  },
   mounted () {
     this.setCurrentPageTableData(this.tableData, 0, this.tableRows);
   },
@@ -141,18 +152,32 @@ export default {
     },
     del (row) {
       this.$emit('onDelete', row);
+    },
+    setIncludeColor (value) {
+      value = value + '';
+      if (this.searchText.trim() === '') return false;
+      return !!~value.indexOf(this.searchText.trim());
+    }
+  },
+  computed: {
+    listeners () {
+      return {
+        ...this.$listeners
+      };
     }
   },
   watch: {
     searchText (value) {
-      if (value.trim() === '') {
+      value = value.trim();
+      if (value === '') {
         this.computedTableData = this.tableData;
       } else {
         this.computedTableData = this.tableData.filter(row => {
           return this.tableColumns.some(column => {
             if (!this.noSearchFields.includes(column['field'])) {
               if (!row[column['field']]) return false;
-              return !!~row[column['field']].indexOf(value);
+              // 强制将每个字段转换为string类型
+              return !!~(row[column['field']] + '').indexOf(value);
             }
             return false;
           });
@@ -163,6 +188,8 @@ export default {
     },
     tableData (data) {
       this.setCurrentPageTableData(data, 0, this.tableRows);
+      // 由于数据是异步获取的，所以要在这里做监听
+      this.computedTableData = data;
     }
   }
 };
@@ -172,9 +199,24 @@ export default {
   .app-table {
     position: relative;
     box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
-    font-size: 14px;
+    font-size: 12px;
     .el-table {
-      font-size: 14px;
+      font-size: 12px;
+      .el-table__row {
+        .-include {
+          color: #F56C6C;
+        }
+      }
+      /deep/ .el-table__header-wrapper {
+        .el-table__header {
+          thead {
+            .cell {
+              font-weight: 500 !important;
+              color: rgb(96, 98, 102) !important;
+            }
+          }
+        }
+      }
     }
     .toolbar {
       display: flex;

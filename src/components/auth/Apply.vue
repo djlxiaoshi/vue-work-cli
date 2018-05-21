@@ -4,39 +4,42 @@
       <ul class="-etl-list-group">
         <li class="list-item">
           <span class="title">当前角色</span>
-          <div class="value">业务人员</div>
+          <div class="value">{{ globalData.userMsg.role_name }}</div>
         </li>
-        <li class="list-item">
+        <li class="list-item my-business">
           <span class="title">当前业务</span>
-          <div class="value">数据支付部</div>
-        </li>
-        <li class="list-item">
-          <span class="title">申请角色</span>
           <div class="value">
-            <el-radio-group v-model="role" size="mini">
-              <el-radio-button label="1" border  >管理员</el-radio-button>
-              <el-radio-button label="2" border >业务人员</el-radio-button>
-              <el-radio-button label="3" border >普通用户</el-radio-button>
-            </el-radio-group>
+            {{ currentBusiness }}
           </div>
         </li>
         <li class="list-item">
           <span class="title">申请业务</span>
           <div class="value">
-            <el-select v-model="studio" placeholder="请选择" size="mini">
+            <el-select v-model="businessId" placeholder="请选择" size="mini">
               <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                v-for="item in businessList"
+                :key="item.id"
+                :label="item.bname"
+                :value="item.id">
               </el-option>
             </el-select>
           </div>
         </li>
         <li class="list-item">
+          <span class="title">申请理由</span>
+          <div class="value" style="flex: 0 0 193px;">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              placeholder="请输入申请理由"
+              v-model="reason">
+            </el-input>
+          </div>
+        </li>
+        <li class="list-item">
           <span class="title"></span>
           <div class="value">
-            <el-button  class="title" type="primary" size="small" plain>主要按钮</el-button>
+            <el-button  class="title" type="primary" size="small" plain @click="apply()">申请</el-button>
           </div>
         </li>
       </ul>
@@ -45,23 +48,81 @@
 </template>
 
 <script>
+import { roleConfig } from '@/config/config';
+import globalDataService from '@/assets/js/globalDataService';
+import Http from '@/assets/js/utils/http';
+import { Notification } from 'element-ui';
+const globalData = globalDataService.getGlobalData();
 export default {
   name: 'Apply',
   data () {
     return {
-      role: '',
-      studio: '',
-      options: [
-        {value: '选项1', label: '双皮奶1'},
-        {value: '选项2', label: '双皮奶2'},
-        {value: '选项3', label: '双皮奶3'}
-      ],
+      role: globalData.userMsg.role_id,
+      businessId: undefined,
+      reason: '',
+      globalData: globalData,
+      roleConfig: roleConfig,
+      businessList: [],
+      myBusinessList: [],
       number: 0
     };
   },
   props: [],
   components: {},
-  methods: {}
+  mounted () {
+    this.getBusinessList();
+    this.getMyBusinessList();
+  },
+  methods: {
+    getBusinessList () {
+      Http.get('business/list/', {type: 'auth'}).then(res => {
+        this.businessList = res.data;
+      });
+    },
+    getMyBusinessList () {
+      Http.get('business/list/', {type: 'my'}).then(data => {
+        this.myBusinessList = data.data;
+      });
+    },
+    apply () {
+      // 获取参数
+      const params = {
+        bid: this.businessId,
+        reason: this.reason
+      };
+      // 参数验证
+      const validateResult = this.paramsValidate(params);
+      if (typeof validateResult === 'string') {
+        Notification.warning({
+          title: 'Warning',
+          message: validateResult
+        });
+        return false;
+      } else if (typeof validateResult === 'boolean' && validateResult) {
+        this.sendRequest(params);
+      }
+    },
+    paramsValidate (params) {
+      const reason = params.reason.trim();
+      const bid = params.bid;
+      if (bid === undefined) {
+        return '请选择业务类型';
+      } else if (!reason) {
+        return '请填写申请理由';
+      }
+      return true;
+    },
+    sendRequest (params) {
+      Http.post('auth/apply/', params).then(res => {
+        debugger;
+      });
+    }
+  },
+  computed: {
+    currentBusiness () {
+      return this.myBusinessList.map(item => item['bname']).join('、');
+    }
+  }
 };
 </script>
 
@@ -74,6 +135,11 @@ export default {
     }
    .btn-wrap {
      text-align: left;
+   }
+   .my-business {
+     .value span{
+       padding: 5px;
+     }
    }
  }
 </style>

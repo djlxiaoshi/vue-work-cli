@@ -17,7 +17,7 @@
 <script>
 import AppSidebar from '@/components/app-sidebar/AppSidebar';
 import AppHeader from '@/components/app-header/AppHeader';
-import globalDataService from '@/assets/js/global';
+import globalDataService from '@/assets/js/globalDataService';
 
 export default {
   name: 'AppMain',
@@ -71,6 +71,7 @@ export default {
     .app-main-right {
       .header {
         height: 60px;
+        box-sizing: border-box;
       }
       .body {
         padding: 20px;

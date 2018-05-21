@@ -9,34 +9,24 @@
       @select="handleSelect">
       <el-menu-item
         v-for="(tab, index) in tabList"
-        v-if="!tab['hidden'] && (!tab['permission'] || tab['permission'].includes(globalData['roleTypeId']))"
+        v-if="!tab['hidden'] && (!tab['permission'] || tab['permission'].includes(globalData.userMsg.role_id))"
         :key="index"
         :index="tab['name']"
         :route="{path: tab['path'] }"
         :disabled="tab['disabled']"
       >{{ tab['label'] }}</el-menu-item>
     </el-menu>
-
     <div class="header-user">
-      <el-popover
-        popper-class="logout-popover-content"
-        class="avatar"
-        ref="popover"
-        placement="bottom"
-        trigger="click">
-        <div slot="reference" style="height: 100%;">
-          <img src="" alt="">
-        </div>
-          <p class="username">JohnLi</p>
-          <p class="logout">退出登录</p>
-      </el-popover>
+      <span class="username">{{globalData.userMsg.user_cname}}</span>
+      <span class="logout fa fa-sign-out" @click="logout()" title="退出登录"></span>
     </div>
   </div>
 </template>
 
 <script>
-import globalDataService from '@/assets/js/global';
-
+import globalDataService from '@/assets/js/globalDataService';
+import Http from '@/assets/js/utils/http';
+import ENV from '@/environment/environment';
 export default {
   name: 'AppHeader',
   data () {
@@ -54,11 +44,21 @@ export default {
       default: '0'
     }
   },
+  components: {
+  },
   created () {
+  },
+  mounted () {
+
   },
   methods: {
     handleSelect (tab) {
       this.$emit('onHeaderTabChange', tab);
+    },
+    logout () {
+      Http.get('user/logout/').then(res => {
+        window.location.href = ENV.SSO;
+      });
     }
   }
 };
@@ -80,26 +80,22 @@ export default {
   }
   .app-header {
     display: flex;
+    height: calc(100% + 2px);
     border: solid 1px #e6e6e6;
-    height: 100%;
-    .header-menu {
+    /deep/ .header-menu {
       border: none;
+      .el-menu-item {
+      }
     }
     .header-user {
       margin: 0 50px 0 auto;
       display: flex;
       align-items: center;
-      .avatar {
-        border: 1px solid #E6E6E6;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 30px;
+      .username {
+        margin-right: 10px;
+      }
+      .logout {
         cursor: pointer;
-        overflow: hidden;
-        img {
-          width: 40px;
-        }
       }
     }
   }

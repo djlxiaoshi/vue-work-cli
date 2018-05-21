@@ -1,138 +1,37 @@
 <template>
   <div class="interface-query">
     <AppTable
+      :loading="loading"
       :title="'接口查询'"
-      :tableRows="3"
       :tableColumns="tableColumns"
-      :tableData="tableData"
+      :tableData="APIList"
+      :options="options"
+      :hasEdit="true"
+      @onEdit="apiEdit($event)"
+      @optionsSelectedChange="change"
     >
       <template slot="custom-toolbar">
-        <el-button type="primary" size="mini" @click="openConfigDialog()" class="custom-toolbar-wrap">新增自定义接口</el-button>
+        <el-button type="primary" size="mini" @click="openAddDialog()" class="custom-toolbar-wrap">新增自定义接口</el-button>
+      </template>
+      <template slot="operate" slot-scope="scope">
+        <el-button type="default" @click="openConfigDialog(scope.row)" class="etl-btn mini" icon="el-icon-setting" title="配置"></el-button>
+        <el-button type="success" @click="start(scope.row)" class="etl-btn mini" icon="el-icon-check" title="启用" :disabled="scope.row.status == '2'"></el-button>
       </template>
     </AppTable>
 
-    <el-dialog
-      custom-class="add-dialog"
-      title="新增自定义接口"
-      :visible.sync="addDialogVisible"
-      width="40%"
-      >
-        <ul class="-etl-list-group">
-          <li class="list-item">
-            <span class="title">原始数据库</span>
-            <span class="value">
-              <el-select v-model="primary_database" placeholder="请选择" size="small">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </span>
-          </li>
-          <li class="list-item">
-            <span class="title">接口名称</span>
-            <span class="value">
-              <el-input placeholder="请输入接口名称" v-model="interface_name" size="small"></el-input>
-            </span>
-          </li>
-          <li class="list-item">
-            <span class="title">接口中文注释</span>
-            <span class="value">
-              <el-input placeholder="请输入中文注释" v-model="interface_label" size="small"></el-input>
-            </span>
-          </li>
-          <li class="list-item">
-            <span class="title">原始数据表</span>
-            <span class="value">
-              <el-input placeholder="请输入原始数据表" v-model="primary_table" size="small"></el-input>
-            </span>
-          </li>
-          <li class="list-item">
-            <span class="title">原始数据表中文解释</span>
-            <span class="value">
-              <el-input placeholder="请输入原始数据表中文解释" v-model="primary_database_label" size="small"></el-input>
-            </span>
-          </li>
-          <li class="list-item">
-            <span class="title">数据保存类型</span>
-            <span class="value">
-              <el-select v-model="data_type" placeholder="请选择" size="small">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </span>
-          </li>
-        </ul>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
-
-    <el-dialog
-      custom-class="config-dialog"
-      title="接口配置"
-      :visible.sync="configDialogVisible"
-      width="50%"
-    >
-      <div class="dialog-body">
-        <ul class="-etl-list-group">
-          <li class="list-item">
-            <span class="title">接口类型</span>
-            <span class="value">type</span>
-          </li>
-          <li class="list-item">
-            <span class="title">状态</span>
-            <span class="value">禁用</span>
-          </li>
-          <li class="list-item">
-            <span class="title">创建</span>
-            <span class="value">sdgvsd</span>
-          </li>
-          <li class="list-item">
-            <span class="title">最后修改者</span>
-            <span class="value">sdgbs</span>
-          </li>
-          <li class="list-item">
-            <span class="title">上次修改时间</span>
-            <span class="value">3245让45435</span>
-          </li>
-        </ul>
-        <div class="config-table">
-          <AppTable
-            :title="'参数配置'"
-            :tableRows="3"
-            :tableColumns="configDialogTableColumns"
-            :tableData="configDialogTableData"
-          >
-            <template slot="custom-toolbar">
-              <el-button type="primary" size="mini" class="custom-toolbar-wrap">新增参数</el-button>
-            </template>
-          </AppTable>
-        </div>
-      </div>
-
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="configDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="configDialogVisible = false">保 存</el-button>
-      </span>
-    </el-dialog>
+    <AddConfigDialog ref="configDialog" :id="currentRow['id']"></AddConfigDialog>
+    <AddApiDialog ref="addApiDialog" :data="apiData" :mode="addApiDialogMode" @confirm="getAPIList(bid)"></AddApiDialog>
   </div>
 </template>
 
 <script>
+import AddApiDialog from './AddApiDialog';
+import AddConfigDialog from './AddConfigDialog.vue';
 export default {
   name: 'Interface',
   data () {
     return {
-      addDialogVisible: false,
-      configDialogVisible: false,
+      loading: false,
       interface_name: '',
       interface_label: '',
       primary_table: '',
@@ -140,51 +39,105 @@ export default {
       primary_database: '',
       primary_database_label: '',
       options: [
-        {value: '选项1', label: '双皮奶1'},
-        {value: '选项2', label: '双皮奶2'},
-        {value: '选项3', label: '双皮奶3'}
+        {
+          type: 'dropdown',
+          labelName: 'bname',
+          valueName: 'id',
+          selected: 1,
+          list: []
+        }
       ],
+      myBusinessList: [],
       tableColumns: [
-        { label: '业务部门', field: 'department' },
-        { label: '原始数据库', field: 'database' },
-        { label: '接口名称', field: 'interface_name' },
-        { label: '接口中文注释', field: 'interface_label' },
-        { label: '原始数据表', field: 'primary_table' },
-        { label: '原始数据表中文解释', field: 'primary_database_label', width: 300 },
-        { label: '状态', field: 'status' },
-        { label: '操作', field: 'operate' }
+        { label: '业务名称', field: 'bname' },
+        { label: 'api名称', field: 'api' },
+        { label: '状态名称', field: 'status_name' },
+        { label: 'api表名称', field: 'api_table' },
+        { label: 'api表主键', field: 'api_table_primary_keys' },
+        { label: 'api表说明', field: 'api_table_desc' },
+        { label: 'api描述', field: 'api_desc' },
+        { label: 'api表分区字段', field: 'api_table_partition_fields' },
+        { label: 'api数据类型', field: 'api_data_type' },
+        { label: '创建人', field: 'creater' },
+        { label: '创建人信息', field: 'creater_user_info' },
+        { label: '创建时间', field: 'created_time', width: 160 },
+        { label: '更新人', field: 'updater' },
+        { label: '更新人信息', field: 'updater_user_info' },
+        { label: '更新时间', field: 'updated_time', width: 160 },
+        { label: '操作', field: 'operate', width: 150, fixed: 'right' }
       ],
-      tableData: [
-        { department: '数据支付部', database: 'database1', interface_name: 'interface_1', interface_label: '接口一', primary_table: 'df', primary_database_label: 'ds' },
-        { department: '数据支付部2', database: 'database1', interface_name: 'interface_1', interface_label: '接口一', primary_table: 'df', primary_database_label: 'ds' },
-        { department: '数据支付部3', database: 'database1', interface_name: 'interface_1', interface_label: '接口一', primary_table: 'df', primary_database_label: 'ds' },
-        { department: '数据支付部4', database: 'database1', interface_name: 'interface_1', interface_label: '接口一', primary_table: 'df', primary_database_label: 'ds' }
-      ],
-      configDialogTableColumns: [
-        { label: '业务ID', field: 'id' },
-        { label: '参数类型', field: 'type' },
-        { label: '参数默认值', field: 'default' },
-        { label: '中文注释', field: 'annotation' },
-        { label: '是否允许为空', field: 'empty' },
-        { label: '操作', field: 'operate' }
-      ],
-      configDialogTableData: [
-        {id: 1, type: 2, default: 'dsfsd', annotation: 'i dont know', empty: 0},
-        {id: 2, type: 2, default: 'dsfsd', annotation: 'i dont know', empty: 0},
-        {id: 3, type: 2, default: 'dsfsd', annotation: 'i dont know', empty: 0},
-        {id: 4, type: 2, default: 'dsfsd', annotation: 'i dont know', empty: 0}
-      ]
+      APIList: [],
+      bid: '',
+      apiData: {
+        bid: '',
+        api: '',
+        api_desc: '',
+        api_table: '',
+        api_table_desc: '',
+        api_data_type: '',
+        api_flume_template: ''
+      },
+      currentRow: {},
+      addApiDialogMode: 'add'
     };
   },
   props: [],
   components: {
+    AddApiDialog,
+    AddConfigDialog
+  },
+  async mounted () {
+    this.myBusinessList = await this.getMyBusinessList();
+    this.options[0].list = this.myBusinessList;
+    this.bid = this.options[0].selected || this.options[0].list[0].id;
+    this.apiData.bid = this.bid;
+    this.getAPIList(this.bid);
   },
   methods: {
-    openAddDialog () {
-      this.addDialogVisible = true;
+    async getMyBusinessList () {
+      const data = await this.$http.get('business/list/', {type: 'my'});
+      return data.data;
     },
-    openConfigDialog () {
-      this.configDialogVisible = true;
+    getAPIList (bid) {
+      this.loading = true;
+      this.$http.get('api/list/', {bid: bid}).then(data => {
+        this.loading = false;
+        this.APIList = data.data;
+      });
+    },
+    openAddDialog () {
+      this.apiData = {};
+      Object.keys(this.apiData).forEach(key => {
+        this.apiData[key] = '';
+      });
+      this.addApiDialogMode = 'add';
+      this.apiData.bid = this.bid;
+      this.$refs.addApiDialog.open();
+    },
+    openConfigDialog (row) {
+      this.currentRow = row;
+      this.$refs.configDialog.open();
+    },
+    change ({value, index, option, options}) {
+      if (index === 0) {
+        this.getAPIList(value);
+      }
+    },
+    apiEdit (row) {
+      this.currentRow = row;
+      this.apiData = JSON.parse(JSON.stringify(row));
+      this.addApiDialogMode = 'edit';
+      this.$refs.addApiDialog.open();
+    },
+    start (row) {
+      const status = row.status === 1 ? 2 : 1;
+      this.currentRow = row;
+      this.$http.post('api/switch/status/', {
+        api_id: row.id,
+        status: status
+      }).then(res => {
+        row.status = status;
+      });
     }
   }
 };

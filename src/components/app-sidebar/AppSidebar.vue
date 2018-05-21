@@ -9,12 +9,12 @@
       :collapse-transition="false"
       background-color="#001529"
       text-color="#a3b0bf"
-      active-text-color="#ffd04b"
+      active-text-color="#fff"
       :default-openeds="getDefaultOpens"
       class="body"
       :collapse="isCollapse" >
       <template v-for="(route) in routesConfig">
-        <template v-if="!route['hidden'] && (!route['permission'] || route['permission'].includes(globalData['roleTypeId']))">
+        <template v-if="!route['hidden'] && (!route['permission'] || route['permission'].includes(globalData.userMsg.role_id))">
           <el-submenu class="el-submenu-title"
                       :index="route.path"
                       :key="route.path"
@@ -26,7 +26,7 @@
             </template>
             <el-menu-item
               v-for="(child) in route['children']"
-              v-if="!child['hidden'] && (!child['permission'] || child['permission'].includes(globalData['roleTypeId']))"
+              v-if="!child['hidden'] && (!child['permission'] || child['permission'].includes(globalData.userMsg.role_id))"
               :class="{'is-active': isActive(`${route.path}/${child['path']}`)}"
               :index="`${route.path}/${child['path']}`"
               :key="`${route.path}/${child['path']}`"
@@ -55,7 +55,7 @@
 
 <script>
 import { mainRoutes } from '@/router/routes';
-import globalDataService from '@/assets/js/global';
+import globalDataService from '@/assets/js/globalDataService';
 
 export default {
   name: 'AppSidebar',
@@ -67,8 +67,7 @@ export default {
     };
   },
   props: ['isCollapse'],
-  created () {
-    console.log(this.$route);
+  mounted () {
   },
   methods: {
     toggleCollapse () {

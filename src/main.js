@@ -6,12 +6,15 @@ import App from './App';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 
+import Http from '@/assets/js/utils/http';
+import GlobalDataService from '@/assets/js/globalDataService';
+
 // 引入Element-UI  全部加载
 // import ElementUI from 'element-ui';
 
 // 按需加载
-import { Button, Select, Option, Table, TableColumn, Input, RadioButton,
-  RadioGroup, Tabs, Popover, Menu, MenuItem, Submenu, Card, Dialog, Pagination, Loading } from 'element-ui';
+import { Button, Select, Option, Table, TableColumn, Input, RadioButton, CheckboxButton, CheckboxGroup, Checkbox, Notification, MessageBox,
+  RadioGroup, Tabs, Popover, Menu, MenuItem, Submenu, Card, Dialog, Pagination, Loading, Cascader } from 'element-ui';
 
 import router from './router';
 
@@ -40,30 +43,48 @@ Vue.use(MenuItem);
 Vue.use(Submenu);
 Vue.use(Card);
 Vue.use(RadioButton);
+Vue.use(Checkbox);
+Vue.use(CheckboxButton);
+Vue.use(CheckboxGroup);
 Vue.use(RadioGroup);
 Vue.use(Dialog);
 Vue.use(Pagination);
+Vue.use(Cascader);
 
 Vue.use(Loading.directive);
 
 Vue.prototype.$loading = Loading.service;
+Vue.prototype.$alert = MessageBox.alert;
+
+Vue.prototype.$http = Http;
+Vue.prototype.$notice = Notification;
 
 // 这里设置路由守卫，只有等获取到用户信息之后，才能够进入应用
 // 所以这里整个应用要包裹在一个路由之下
 function getUserMsg () {
   return new Promise((resolve, reject) => {
-    resolve();
-    // reject(new Error('出错啦!'));
+    Http.get('user/info/').then(res => {
+      resolve(res.data);
+    }).catch(error => {
+      reject(error);
+    });
   });
 }
 
+// 用户信息获取的
 router.beforeEach((to, from, next) => {
-  getUserMsg().then(res => {
+  if (!GlobalDataService.getGlobalData().userMsg) {
+    getUserMsg().then(user => {
+      GlobalDataService.setGlobalData({
+        userMsg: user
+      });
+      next();
+    }, error => {
+      next(error);
+    });
+  } else {
     next();
-  }, error => {
-    console.log(error);
-    next(error);
-  });
+  }
 });
 
 // 自动化全局全局注册

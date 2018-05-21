@@ -10,14 +10,16 @@ class GlobalDataService {
     roleTypeId: 1
   };
   globalHeaders = {};
-  setGlobalData (params) {
-    Object.assign(this.globalData, params);
-  }
   getGlobalData () {
     return this.globalData;
   }
+  setGlobalData (params) {
+    if (typeof params !== 'object') params = {};
+    Object.assign(this.globalData, params);
+  }
   setGlobalHeader (data) {
     this.globalHeader = data;
+    this.globalHeaderChange(data);
   }
   getGlobalHeader () {
     return this.globalHeader;

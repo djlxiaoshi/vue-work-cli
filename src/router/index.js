@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import { routes, mainRoutes } from './routes';
-import globalDataService from '@/assets/js/global';
+import globalDataService from '@/assets/js/globalDataService';
 
 const path = require('path');
 Vue.use(Router);
