@@ -18,7 +18,7 @@ npm run buildLocal  // 本地环境
 
 |环境名称|分支|配置文件|前端域名|后端域名|sso登录地址|
 |:------|:---|:------|:-------|:------|:---------|
-|本地环境|dev|dev.env.js|etl-local.boyaa.com(127.0.0.1)|etl-test.boyaa.com|sso.boyaa.com/Index/login/appid/1554|
-|测试环境|test|test.env.js|etl-test.boyaa.com|etl-test.boyaa.com|sso.boyaa.com/Index/login/appid/1554|
-|正式环境|release|prod.env.js|etl.boyaa.com|etl.boyaa.com|sso.boyaa.com/Index/login/appid/1554|
+|本地环境|dev|dev.env.js|etl-local.oa.com(127.0.0.1)|etl-test.boyaa.com|sso.boyaa.com/Index/login/appid/1554|
+|测试环境|test|test.env.js|etl-test.oa.com|etl-test.boyaa.com|sso.boyaa.com/Index/login/appid/1554|
+|正式环境|release|prod.env.js|etl.oa.com|etl.boyaa.com|sso.boyaa.com/Index/login/appid/1554|
 
