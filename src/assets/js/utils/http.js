@@ -30,7 +30,7 @@ axios.interceptors.response.use((response) => {
         window.location.href = ENV.SSO;
       }
     } else {
-      if (response.config.method === 'POST') {
+      if (response.config.method === 'post') {
         Notification.success({
           title: 'Success',
           message: '操作成功'

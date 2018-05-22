@@ -2,7 +2,7 @@
   <div class="page-auth-check">
     <AppTable
       title="权限审批"
-      :tableRows="3"
+      :tableRows="20"
       :border="true"
       :tableColumns="tableColumns"
       :tableData="pendingList"
@@ -43,11 +43,12 @@ export default {
       tableColumns: [
         { label: '业务id', field: 'bid' },
         { label: '业务名称', field: 'bname' },
+        { label: '申请人', field: 'user_info' },
         { label: '申请原因', field: 'reason' },
         { label: '申请时间', field: 'create_time' },
         { label: '审核时间', field: 'audit_time' },
-        { label: '当前审核用户', field: 'current_audit_user_info' },
-        { label: '最终审核用户信息', field: 'audit_user_info' },
+        { label: '当前审核员', field: 'current_audit_user_info' },
+        { label: '最终审核员', field: 'audit_user_info' },
         { label: '审核说明', field: 'audit_remark' },
         { label: '审核状态', field: 'status_name' },
         { label: '操作', field: 'operate', width: 300 }
@@ -82,16 +83,13 @@ export default {
         operate: this.currentOp,
         remark: this.remark
       };
-      this.$alert('确定通过该条记录吗', '警告', {
+      this.$confirm('确定通过该条记录吗?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        showCancelButton: true,
-        callback: action => {
-          if (action === 'confirm') {
-            this.sendRequest(params);
-          }
-        }
-      });
+        type: 'warning'
+      }).then(() => {
+        this.sendRequest(params);
+      }).catch(() => {});
     },
     reject () {
       const params = {

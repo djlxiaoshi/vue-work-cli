@@ -3,6 +3,7 @@
     <AppTable
       title="业务列表"
       :loading="loading"
+      :tableRows="20"
       :border="true"
       :tableColumns="tableColumns"
       :tableData="tableData"
@@ -12,6 +13,7 @@
       </template>
       <template slot="operate" slot-scope="scope">
         <el-button type="primary" @click="openDetailsDialog(scope.row)" class="etl-btn mini" icon="el-icon-info" title="详情"></el-button>
+        <el-button type="danger" @click="delBusiness(scope.row)" class="etl-btn mini" icon="el-icon-delete" title="删除"></el-button>
       </template>
     </AppTable>
 
@@ -80,6 +82,21 @@ export default {
       this.currentRow = {};
       this.mode = 'add';
       this.$refs.detailsDialog.open();
+    },
+    del (params) {
+      return this.$http.post('business/delete/', params);
+    },
+    delBusiness (row) {
+      this.currentRow = row;
+      this.$confirm('是否删除该业务?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.del({bid: row.id}).then(res => {
+          this.getBusinessList();
+        });
+      }).catch(() => {});
     },
     confirm () {
       this.getBusinessList();

@@ -18,7 +18,14 @@
           </thead>
           <tbody class="disabled-drag">
             <tr v-for="row in data" :key="row['id']" style="border-bottom: 1px solid #e5e5e5; height: 40px;">
-              <td v-for="columns in tableColumns" :key="columns['field']">{{ row[columns['field']] }}</td>
+              <td v-for="columns in tableColumns" :key="columns['field']">
+                <template v-if="columns['field'] === 'operate' && row['field_is_default'] == 0">
+                  <el-button type="warning" icon="el-icon-edit" class="etl-btn mini" title="编辑"></el-button>
+                </template>
+                <template v-else>
+                  {{ row[columns['field']] }}
+                </template>
+              </td>
             </tr>
           </tbody>
           <tbody class="container dragable">

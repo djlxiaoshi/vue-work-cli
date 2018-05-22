@@ -34,7 +34,15 @@ const mainRoutes = [
     name: 'Interface',
     icon: 'fa-link',
     label: '接口查询',
-    component: Interface
+    component: Interface,
+    permission: [2, 3, 99], // 普通用户不显示
+    // 避免直接通过浏览器导航栏进入
+    beforeEnter: (to, from, next) => {
+      const permission = [2, 3, 99];
+      permission.includes(globalData.userMsg.role_id) ? next() : next({
+        path: '/'
+      });
+    }
   },
   {
     path: '/database',
@@ -67,7 +75,7 @@ const mainRoutes = [
         name: 'Check',
         label: '我的审核',
         component: Check,
-        permission: [2, 3, 99],
+        permission: [2, 3, 99], // 普通用户不显示
         // 避免直接通过浏览器导航栏进入
         beforeEnter: (to, from, next) => {
           const permission = [2, 3, 99];

@@ -2,7 +2,7 @@
   <div class="auth-settings-page">
     <AppTable
       title="用户列表"
-      :tableRows="3"
+      :tableRows="20"
       :border="true"
       :tableColumns="tableColumns"
       :tableData="tableData"

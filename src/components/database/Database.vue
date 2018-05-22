@@ -2,7 +2,7 @@
   <div class="database-page">
     <AppTable
       title="数据库表配置"
-      :tableRows="3"
+      :tableRows="20"
       :tableColumns="tableColumns"
       :tableData="tableData"
       :hasEdit="true"

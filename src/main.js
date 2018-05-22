@@ -14,7 +14,7 @@ import GlobalDataService from '@/assets/js/globalDataService';
 
 // 按需加载
 import { Button, Select, Option, Table, TableColumn, Input, RadioButton, CheckboxButton, CheckboxGroup, Checkbox, Notification, MessageBox,
-  RadioGroup, Tabs, Popover, Menu, MenuItem, Submenu, Card, Dialog, Pagination, Loading, Cascader } from 'element-ui';
+  RadioGroup, Tabs, Popover, Menu, MenuItem, Submenu, Card, Dialog, Pagination, Loading, Cascader, Form, FormItem, Switch, Col, Row } from 'element-ui';
 
 import router from './router';
 
@@ -50,11 +50,16 @@ Vue.use(RadioGroup);
 Vue.use(Dialog);
 Vue.use(Pagination);
 Vue.use(Cascader);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Switch);
+Vue.use(Col);
+Vue.use(Row);
 
 Vue.use(Loading.directive);
 
 Vue.prototype.$loading = Loading.service;
-Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm;
 
 Vue.prototype.$http = Http;
 Vue.prototype.$notice = Notification;

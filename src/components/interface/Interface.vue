@@ -3,6 +3,7 @@
     <AppTable
       :loading="loading"
       :title="'接口查询'"
+      :tableRows="20"
       :tableColumns="tableColumns"
       :tableData="APIList"
       :options="options"
@@ -15,7 +16,8 @@
       </template>
       <template slot="operate" slot-scope="scope">
         <el-button type="default" @click="openConfigDialog(scope.row)" class="etl-btn mini" icon="el-icon-setting" title="配置"></el-button>
-        <el-button type="success" @click="start(scope.row)" class="etl-btn mini" icon="el-icon-check" title="启用" :disabled="scope.row.status == '2'"></el-button>
+        <el-button type="success" @click="toggle(scope.row, true)" class="etl-btn mini" icon="el-icon-check" title="启用" v-if="scope.row.status != 2 || scope.row.status == 1"></el-button>
+        <el-button type="danger" @click="toggle(scope.row, false)" class="etl-btn mini" icon="el-icon-close" title="禁用" v-if="scope.row.status != 0 && scope.row.status != 1"></el-button>
       </template>
     </AppTable>
 
@@ -50,20 +52,13 @@ export default {
       myBusinessList: [],
       tableColumns: [
         { label: '业务名称', field: 'bname' },
-        { label: 'api名称', field: 'api' },
+        { label: '接口名称', field: 'api' },
+        { label: '接口中文注释', field: 'api_desc' },
+        { label: '接口数据类型', field: 'api_data_type' },
+        { label: '接口创建人信息', field: 'creater_user_info' },
+        { label: '数据库表', field: 'api_table' },
+        { label: '数据库表注释', field: 'api_table_desc' },
         { label: '状态名称', field: 'status_name' },
-        { label: 'api表名称', field: 'api_table' },
-        { label: 'api表主键', field: 'api_table_primary_keys' },
-        { label: 'api表说明', field: 'api_table_desc' },
-        { label: 'api描述', field: 'api_desc' },
-        { label: 'api表分区字段', field: 'api_table_partition_fields' },
-        { label: 'api数据类型', field: 'api_data_type' },
-        { label: '创建人', field: 'creater' },
-        { label: '创建人信息', field: 'creater_user_info' },
-        { label: '创建时间', field: 'created_time', width: 160 },
-        { label: '更新人', field: 'updater' },
-        { label: '更新人信息', field: 'updater_user_info' },
-        { label: '更新时间', field: 'updated_time', width: 160 },
         { label: '操作', field: 'operate', width: 150, fixed: 'right' }
       ],
       APIList: [],
@@ -116,6 +111,13 @@ export default {
     },
     openConfigDialog (row) {
       this.currentRow = row;
+      if (row.status === 2) {
+        this.$notice.error({
+          title: 'Error',
+          message: '请先禁用，然后进行配置'
+        });
+        return;
+      }
       this.$refs.configDialog.open();
     },
     change ({value, index, option, options}) {
@@ -129,15 +131,28 @@ export default {
       this.addApiDialogMode = 'edit';
       this.$refs.addApiDialog.open();
     },
-    start (row) {
-      const status = row.status === 1 ? 2 : 1;
+    async toggle (row, flag) {
+      const status = (row.status === 0 || row.status === 1) ? 2 : 0;
       this.currentRow = row;
+      if (flag) {
+        const result = await this.getApiConfigFields(row.id);
+        if (!result.data.api_fields.length) {
+          this.$notice.error({
+            title: 'Error',
+            message: '参数配置不能为空'
+          });
+          return;
+        }
+      }
       this.$http.post('api/switch/status/', {
         api_id: row.id,
         status: status
       }).then(res => {
         row.status = status;
       });
+    },
+    getApiConfigFields (id) {
+      return this.$http.get('api/detail/', {api_id: id});
     }
   }
 };

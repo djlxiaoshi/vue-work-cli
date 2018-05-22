@@ -3,77 +3,87 @@
     custom-class="interface-add-api-dialog"
     :title="mode === 'add' ? '新增接口' : '编辑'"
     :visible.sync="dialogVisible"
+    :close-on-click-modal="false"
+    :before-close="close"
     width="50%"
   >
     <div class="dialog-body">
-      <ul class="-etl-list-group">
-        <li class="list-item">
-          <span class="title">接口名称</span>
-          <span class="value">
-            <el-input v-model="data.api" placeholder="请输入接口名称" size="small"></el-input>
-          </span>
-        </li>
-        <li class="list-item">
-          <span class="title">接口中文注释</span>
-          <span class="value">
-            <el-input v-model="data.api_desc" placeholder="请输入接口中文注释" size="small"></el-input>
-          </span>
-        </li>
-        <li class="list-item">
-          <span class="title">原始数据表</span>
-          <span class="value">
-            <el-input v-model="data.api" placeholder="请输入原始表名称" size="small" disabled></el-input>
-          </span>
-        </li>
-        <li class="list-item">
-          <span class="title">原始数据表说明</span>
-          <span class="value">
-            <el-input v-model="data.api_table_desc" placeholder="请输入原始表说明" size="small"></el-input>
-          </span>
-        </li>
-        <li class="list-item">
-          <span class="title">api数据类型</span>
-          <span class="value">
-            <el-radio-group v-model="data.api_data_type" size="mini">
-              <el-radio-button label="csv">hive</el-radio-button>
-              <el-radio-button label="avro">kudo</el-radio-button>
-            </el-radio-group>
-          </span>
-        </li>
-        <li class="list-item">
-          <span class="title">api接口数据量</span>
-          <span class="value">
-            <el-radio-group v-model="data.api_flume_template" size="mini">
-              <el-radio-button label="small"></el-radio-button>
-              <el-radio-button label="medium"></el-radio-button>
-              <el-radio-button label="big"></el-radio-button>
-            </el-radio-group>
-          </span>
-        </li>
+      <el-form ref="interface-add-form" :model="data" label-width="150px"  size="small" :rules="rules">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="接口名称" prop="api">
+              <el-input v-model="data.api" placeholder="接口名称"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="接口中文注释" prop="api_desc">
+              <el-input v-model="data.api_desc" placeholder="接口中文注释"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="原始数据表" prop="api">
+              <el-input v-model="data.api" placeholder="原始表名称"  disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="原始数据表说明" prop="api_table_desc">
+              <el-input v-model="data.api_table_desc" placeholder="原始表说明"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="api数据类型" prop="api_data_type">
+              <el-radio-group v-model="data.api_data_type">
+                <el-radio-button label="csv">hive</el-radio-button>
+                <el-radio-button label="avro">kudo</el-radio-button>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="api接口数据量" prop="api_flume_template">
+              <el-radio-group v-model="data.api_flume_template">
+                <el-radio-button label="small"></el-radio-button>
+                <el-radio-button label="medium"></el-radio-button>
+                <el-radio-button label="big"></el-radio-button>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <template v-if="mode === 'edit'">
-          <li class="list-item">
-            <span class="title">状态</span>
-            <span class="value">{{data.status_name}}</span>
-          </li>
-          <li class="list-item">
-            <span class="title">创建者</span>
-            <span class="value">{{data.creater_user_info}}</span>
-          </li>
-          <li class="list-item">
-            <span class="title">最后修改者</span>
-            <span class="value">{{data.updater_user_info}}</span>
-          </li>
-          <li class="list-item">
-            <span class="title">上次修改时间</span>
-            <span class="value">{{data.updated_time}}</span>
-          </li>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="状态">
+                <span class="value">{{data.status_name}}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="创建者">
+                <span class="value">{{data.creater_user_info}}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="最后修改者">
+                <span class="value">{{data.updater_user_info}}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="上次修改时间">
+                <span class="value">{{data.updated_time}}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </template>
-      </ul>
+      </el-form>
     </div>
 
     <span slot="footer" class="dialog-footer">
         <el-button @click="close()">取 消</el-button>
-        <el-button type="primary" @click="save()">保 存</el-button>
+        <el-button type="primary" @click="submitForm('interface-add-form')">保 存</el-button>
       </span>
   </el-dialog>
 </template>
@@ -83,7 +93,24 @@ export default {
   name: 'AddApi',
   data () {
     return {
-      dialogVisible: false
+      dialogVisible: false,
+      rules: {
+        api: [
+          { required: true, message: '请输入接口名称', trigger: 'blur' }
+        ],
+        api_desc: [
+          { required: true, message: '请输入接口中文注释', trigger: 'blur' }
+        ],
+        api_table_desc: [
+          { required: true, message: '请输入原始数据表说明', trigger: 'blur' }
+        ],
+        api_data_type: [
+          { required: true, message: '请选择api数据类型', trigger: 'change' }
+        ],
+        api_flume_template: [
+          { required: true, message: '请选择api接口数据量', trigger: 'change' }
+        ]
+      }
     };
   },
   props: [
@@ -92,7 +119,15 @@ export default {
     'mode'
   ],
   methods: {
-
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.save();
+        } else {
+          return false;
+        }
+      });
+    },
     save () {
       const params = {
         api: this.data.api,
@@ -107,37 +142,7 @@ export default {
       } else {
         params['api_id'] = this.data.id;
       }
-      const result = this.paramsValidate(params);
-      if (typeof result === 'string') {
-        this.$notice.warning({
-          title: 'Warning',
-          message: result
-        });
-      } else if (typeof result === 'boolean' && result) {
-        this.sendRequest(params);
-      }
-    },
-    paramsValidate (params) {
-      const api = params.api && params.api.trim();
-      const apiDesc = params.api_desc && params.api_desc.trim();
-      const apiTable = params.api_table && params.api_table.trim();
-      const apiTableDesc = params.api_table_desc && params.api_table_desc.trim();
-      const apiDataType = params.api_data_type;
-      const apiDataSize = params.api_flume_template;
-      if (!api) {
-        return '接口名称不能为空';
-      } else {
-        const regexp = /^[a-zA-Z]/;
-        if (!regexp.test(api)) {
-          return '接口名称需以英文字母开头';
-        }
-      }
-      if (!apiDesc) return '接口中文注释不能为空';
-      if (!apiTable) return '原始数据表不能为空';
-      if (!apiTableDesc) return '原始数据表描述不能为空';
-      if (!apiDataType) return '请选择API数据类型';
-      if (!apiDataSize) return '请选择API数据量';
-      return true;
+      this.sendRequest(params);
     },
     sendRequest (params) {
       const url = this.mode === 'add' ? 'api/add/' : 'api/update/';
@@ -151,6 +156,10 @@ export default {
     },
     close () {
       this.dialogVisible = false;
+      this.resetForm('interface-add-form');
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields();
     }
   }
 };

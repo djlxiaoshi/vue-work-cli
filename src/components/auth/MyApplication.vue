@@ -1,11 +1,15 @@
 <template>
   <AppTable
     title="我的申请"
-    :tableRows="3"
+    :tableRows="20"
     :border="true"
     :tableColumns="tableColumns"
     :tableData="myApplyList"
-  ></AppTable>
+  >
+    <template slot="audit_info" slot-scope="scope">
+      {{ scope.row.status == 2 ? scope.row['audit_user_info'] : scope.row['current_audit_user_info']}}
+    </template>
+  </AppTable>
 </template>
 
 <script>
@@ -16,8 +20,8 @@ export default {
       tableColumns: [
         { label: '业务id', field: 'bid' },
         { label: '业务名称', field: 'bname' },
-        { label: '当前审核用户', field: 'business' },
-        { label: '最终审核用户信息', field: 'audit_user_info' },
+        { label: '申请人', field: 'user_info' },
+        { label: '审核员', slotName: 'audit_info' },
         { label: '申请原因', field: 'reason' },
         { label: '申请时间', field: 'create_time' },
         { label: '审核时间', field: 'audit_time' },
