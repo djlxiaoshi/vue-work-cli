@@ -67,13 +67,13 @@ const mainRoutes = [
         name: 'Check',
         label: '我的审核',
         component: Check,
-        // permission: [1, 2, 3, 99],
+        permission: [2, 3, 99],
         // 避免直接通过浏览器导航栏进入
         beforeEnter: (to, from, next) => {
-          // const permission = [1, 2, 3, 99];
-          // permission.includes(globalData.userMsg.role_id) ? next() : next({
-          //   path: '/'
-          // });
+          const permission = [2, 3, 99];
+          permission.includes(globalData.userMsg.role_id) ? next() : next({
+            path: '/'
+          });
         }
       },
       {
@@ -81,13 +81,13 @@ const mainRoutes = [
         name: 'Settings',
         label: '权限设置',
         component: Settings,
-        // permission: [2, 3, 99],
+        permission: [99],
         // 避免直接通过浏览器导航栏进入
         beforeEnter: (to, from, next) => {
-          // const permission = [2, 3, 99];
-          // permission.includes(globalData.userMsg.role_id) ? next() : next({
-          //   path: '/'
-          // });
+          const permission = [99];
+          permission.includes(globalData.userMsg.role_id) ? next() : next({
+            path: '/'
+          });
         }
       },
       {
@@ -103,11 +103,11 @@ const mainRoutes = [
     icon: 'fa-briefcase',
     label: '业务管理',
     component: BusinessList,
-    // permission: [99],
+    permission: [99],
     // 避免直接通过浏览器导航栏进入
     beforeEnter: (to, from, next) => {
-      // const permission = [99];
-      // permission.includes(globalData.userMsg.role_id) ? next() : next('/');
+      const permission = [99];
+      permission.includes(globalData.userMsg.role_id) ? next() : next('/');
     }
   },
   {
