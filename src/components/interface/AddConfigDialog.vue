@@ -75,7 +75,7 @@
                   </td>
                 </template>
                   <td>
-                    <template v-if="isStartMode">
+                    <template>
                       <el-button type="default" class="etl-btn mini" @click="sort(row, 'down')" icon="el-icon-arrow-down" title="下移"></el-button>
                       <el-button type="default" class="etl-btn mini" @click="sort(row, 'up')" icon="el-icon-arrow-up" title="上移"></el-button>
                       <el-button type="danger" class="etl-btn mini" @click="deleteParams(index)" icon="el-icon-delete" title="删除"></el-button>
