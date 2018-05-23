@@ -96,7 +96,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="zookeeper路径" prop="bzk_path">
-                <el-input v-model="copyData.bzk_path" placeholder="zookeeper路径" size="small" disabled></el-input>
+                <el-input v-model="copyData.bzk_path" placeholder="zookeeper路径" size="small"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -266,6 +266,7 @@ export default {
   .business-details-dialog {
     .dialog-body {
       max-height: 500px;
+      min-width: 600px;
       overflow: auto;
       .-etl-list-group {
         display: flex;
