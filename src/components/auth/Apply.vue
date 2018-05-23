@@ -4,7 +4,7 @@
       <ul class="-etl-list-group">
         <li class="list-item">
           <span class="title">当前角色</span>
-          <div class="value">{{ globalData.userMsg.role_name }}</div>
+          <div class="value">{{ globalData.role_name }}</div>
         </li>
         <li class="list-item my-business">
           <span class="title">当前业务</span>
@@ -56,7 +56,7 @@ export default {
   name: 'Apply',
   data () {
     return {
-      role: globalData.userMsg.role_id,
+      role: globalData.role_id,
       businessId: undefined,
       reason: '',
       globalData: globalData,
@@ -118,7 +118,7 @@ export default {
   },
   computed: {
     currentBusiness () {
-      return this.myBusinessList.map(item => item['bname']).join('、');
+      return this.myBusinessList.length ? this.myBusinessList.map(item => item['bname']).join('、') : '无';
     }
   }
 };

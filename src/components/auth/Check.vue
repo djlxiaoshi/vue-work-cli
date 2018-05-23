@@ -8,8 +8,8 @@
       :tableData="pendingList"
     >
       <template slot="operate" slot-scope="scope">
-        <el-button type="success" plain size="mini" @click="operate(1, scope.row)">通过</el-button>
-        <el-button type="danger" plain size="mini" @click="operate(0, scope.row)">拒绝</el-button>
+        <el-button type="success" @click="operate(1, scope.row)" class="etl-btn mini" icon="el-icon-check" title="通过"></el-button>
+        <el-button type="danger" @click="operate(0, scope.row)" class="etl-btn mini" icon="el-icon-close" title="拒绝"></el-button>
       </template>
     </AppTable>
     <el-dialog
@@ -51,7 +51,7 @@ export default {
         { label: '最终审核员', field: 'audit_user_info' },
         { label: '审核说明', field: 'audit_remark' },
         { label: '审核状态', field: 'status_name' },
-        { label: '操作', field: 'operate', width: 300 }
+        { label: '操作', field: 'operate', width: 100 }
       ],
       pendingList: []
     };

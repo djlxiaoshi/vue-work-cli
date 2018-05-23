@@ -21,7 +21,7 @@
       </template>
     </AppTable>
 
-    <AddConfigDialog ref="configDialog" :id="currentRow['id']"></AddConfigDialog>
+    <AddConfigDialog ref="configDialog" :id="currentRow['id']" :status="currentRow['status']"></AddConfigDialog>
     <AddApiDialog ref="addApiDialog" :data="apiData" :mode="addApiDialogMode" @confirm="getAPIList(bid)"></AddApiDialog>
   </div>
 </template>
@@ -111,13 +111,6 @@ export default {
     },
     openConfigDialog (row) {
       this.currentRow = row;
-      if (row.status === 2) {
-        this.$notice.error({
-          title: 'Error',
-          message: '请先禁用，然后进行配置'
-        });
-        return;
-      }
       this.$refs.configDialog.open();
     },
     change ({value, index, option, options}) {
@@ -128,6 +121,13 @@ export default {
     apiEdit (row) {
       this.currentRow = row;
       this.apiData = JSON.parse(JSON.stringify(row));
+      if (row.status === 2) {
+        this.$notice.error({
+          title: 'Error',
+          message: '请先禁用，然后进行编辑'
+        });
+        return;
+      }
       this.addApiDialogMode = 'edit';
       this.$refs.addApiDialog.open();
     },

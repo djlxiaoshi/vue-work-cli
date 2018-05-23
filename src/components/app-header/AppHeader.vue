@@ -9,7 +9,7 @@
       @select="handleSelect">
       <el-menu-item
         v-for="(tab, index) in tabList"
-        v-if="!tab['hidden'] && (!tab['permission'] || tab['permission'].includes(globalData.userMsg.role_id))"
+        v-if="!tab['hidden'] && (!tab['permission'] || tab['permission'].includes(globalData.role_id))"
         :key="index"
         :index="tab['name']"
         :route="{path: tab['path'] }"
@@ -17,21 +17,20 @@
       >{{ tab['label'] }}</el-menu-item>
     </el-menu>
     <div class="header-user">
-      <span class="username">{{globalData.userMsg.user_cname}}</span>
+      <span class="username">{{globalData.user_cname}}</span>
       <span class="logout fa fa-sign-out" @click="logout()" title="退出登录"></span>
     </div>
   </div>
 </template>
 
 <script>
-import globalDataService from '@/assets/js/globalDataService';
-import Http from '@/assets/js/utils/http';
+import GlobalDataService from '@/assets/js/globalDataService';
 import ENV from '@/environment/environment';
 export default {
   name: 'AppHeader',
   data () {
     return {
-      globalData: globalDataService.getGlobalData()
+      globalData: GlobalDataService.getGlobalData()
     };
   },
   props: {
@@ -56,7 +55,11 @@ export default {
       this.$emit('onHeaderTabChange', tab);
     },
     logout () {
-      Http.get('user/logout/').then(res => {
+      // 清除全局保存的用户信息
+      GlobalDataService.setGlobalData({
+        userMsg: null
+      });
+      this.$http.get('user/logout/').then(res => {
         window.location.href = ENV.SSO;
       });
     }

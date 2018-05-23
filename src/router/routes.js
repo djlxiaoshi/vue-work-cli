@@ -35,12 +35,12 @@ const mainRoutes = [
     icon: 'fa-link',
     label: '接口查询',
     component: Interface,
-    permission: [2, 3, 99], // 普通用户不显示
+    permission: [2, 3, 99], // 普通用用户不能查看
     // 避免直接通过浏览器导航栏进入
     beforeEnter: (to, from, next) => {
       const permission = [2, 3, 99];
-      permission.includes(globalData.userMsg.role_id) ? next() : next({
-        path: '/'
+      permission.includes(globalData.role_id) ? next() : next({
+        path: '/auth' // 这里要跳转到一个所有用户都可以进入的路由
       });
     }
   },
@@ -49,7 +49,36 @@ const mainRoutes = [
     name: 'Database',
     icon: 'fa-database',
     label: '数据库查询',
+    permission: [], // 隐藏
     component: Database
+  },
+  {
+    path: '/business',
+    name: 'Business',
+    icon: 'fa-briefcase',
+    label: '业务管理',
+    component: BusinessList,
+    permission: [99],
+    // 避免直接通过浏览器导航栏进入
+    beforeEnter: (to, from, next) => {
+      const permission = [99];
+      permission.includes(globalData.role_id) ? next() : next('/');
+    }
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    icon: 'fa-users',
+    label: '用户列表',
+    component: Settings,
+    permission: [99],
+    // 避免直接通过浏览器导航栏进入
+    beforeEnter: (to, from, next) => {
+      const permission = [99];
+      permission.includes(globalData.role_id) ? next() : next({
+        path: 'auth/'
+      });
+    }
   },
   {
     path: '/auth',
@@ -75,25 +104,11 @@ const mainRoutes = [
         name: 'Check',
         label: '我的审核',
         component: Check,
-        permission: [2, 3, 99], // 普通用户不显示
+        permission: [2, 3, 99],
         // 避免直接通过浏览器导航栏进入
         beforeEnter: (to, from, next) => {
           const permission = [2, 3, 99];
-          permission.includes(globalData.userMsg.role_id) ? next() : next({
-            path: '/'
-          });
-        }
-      },
-      {
-        path: 'settings',
-        name: 'Settings',
-        label: '权限设置',
-        component: Settings,
-        permission: [99],
-        // 避免直接通过浏览器导航栏进入
-        beforeEnter: (to, from, next) => {
-          const permission = [99];
-          permission.includes(globalData.userMsg.role_id) ? next() : next({
+          permission.includes(globalData.role_id) ? next() : next({
             path: '/'
           });
         }
@@ -106,33 +121,15 @@ const mainRoutes = [
     ]
   },
   {
-    path: '/business',
-    name: 'Business',
-    icon: 'fa-briefcase',
-    label: '业务管理',
-    component: BusinessList,
-    permission: [99],
-    // 避免直接通过浏览器导航栏进入
-    beforeEnter: (to, from, next) => {
-      const permission = [99];
-      permission.includes(globalData.userMsg.role_id) ? next() : next('/');
-    }
-  },
-  {
     path: '/plugins',
     name: 'Plugins',
     label: '插件',
     component: Plugins,
-    permission: [1, 2, 3, 99],
-    // 避免直接通过浏览器导航栏进入
-    beforeEnter: (to, from, next) => {
-      const permission = [1, 2, 3, 99];
-      permission.includes(globalData.userMsg.role_id) ? next() : next('/');
-    }
+    permission: [] // 隐藏  浏览器导航栏可以进入
   },
   {
     path: '',
-    redirect: '/interface',
+    redirect: '/auth',
     hidden: true
   }
 ];

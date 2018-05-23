@@ -59,6 +59,7 @@ Vue.use(Row);
 Vue.use(Loading.directive);
 
 Vue.prototype.$loading = Loading.service;
+Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$confirm = MessageBox.confirm;
 
 Vue.prototype.$http = Http;
@@ -80,6 +81,7 @@ function getUserMsg () {
 router.beforeEach((to, from, next) => {
   if (!GlobalDataService.getGlobalData().userMsg) {
     getUserMsg().then(user => {
+      GlobalDataService.setGlobalData(user);
       GlobalDataService.setGlobalData({
         userMsg: user
       });

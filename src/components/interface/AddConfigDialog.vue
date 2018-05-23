@@ -19,12 +19,7 @@
           <tbody class="disabled-drag">
             <tr v-for="row in data" :key="row['id']" style="border-bottom: 1px solid #e5e5e5; height: 40px;">
               <td v-for="columns in tableColumns" :key="columns['field']">
-                <template v-if="columns['field'] === 'operate' && row['field_is_default'] == 0">
-                  <el-button type="warning" icon="el-icon-edit" class="etl-btn mini" title="编辑"></el-button>
-                </template>
-                <template v-else>
-                  {{ row[columns['field']] }}
-                </template>
+                {{ row[columns['field']] }}
               </td>
             </tr>
           </tbody>
@@ -68,21 +63,23 @@
                   </td>
                   <td  :key="columns['field']" v-if="columns['field'] === 'field_is_primary_key'">
                     <el-radio-group v-model="row[columns['field']]" size="mini">
-                      <el-radio-button :label="true">是</el-radio-button>
-                      <el-radio-button :label="false">否</el-radio-button>
+                      <el-radio-button :label="1">是</el-radio-button>
+                      <el-radio-button :label="0">否</el-radio-button>
                     </el-radio-group>
                   </td>
                   <td  :key="columns['field']" v-if="columns['field'] === 'field_is_default'">
                     <el-radio-group v-model="row[columns['field']]" size="mini">
-                      <el-radio-button :label="true">是</el-radio-button>
-                      <el-radio-button :label="false">否</el-radio-button>
+                      <el-radio-button :label="1">是</el-radio-button>
+                      <el-radio-button :label="0">否</el-radio-button>
                     </el-radio-group>
                   </td>
                 </template>
                   <td>
-                    <el-button type="default" class="etl-btn mini" @click="sort(row, 'down')" icon="el-icon-arrow-down" title="下移"></el-button>
-                    <el-button type="default" class="etl-btn mini" @click="sort(row, 'up')" icon="el-icon-arrow-up" title="上移"></el-button>
-                    <el-button type="danger" class="etl-btn mini" @click="deleteParams(index)" icon="el-icon-delete" title="删除"></el-button>
+                    <template v-if="isStartMode">
+                      <el-button type="default" class="etl-btn mini" @click="sort(row, 'down')" icon="el-icon-arrow-down" title="下移"></el-button>
+                      <el-button type="default" class="etl-btn mini" @click="sort(row, 'up')" icon="el-icon-arrow-up" title="上移"></el-button>
+                      <el-button type="danger" class="etl-btn mini" @click="deleteParams(index)" icon="el-icon-delete" title="删除"></el-button>
+                    </template>
                   </td>
               </tr>
           </tbody>
@@ -108,7 +105,6 @@ export default {
         { label: '字段默认值', field: 'field_default_value', width: 100 },
         { label: '表字段类型', field: 'field_type', width: 120 },
         { label: '主键', field: 'field_is_primary_key', width: 100 },
-        { label: '默认字段', field: 'field_is_default', width: 100 },
         { label: '接口字段类型', field: 'field_api_type', width: 120 },
         { label: '字段说明', field: 'field_desc', width: 120 },
         { label: '是否为空', field: 'field_isnull', width: 100 },
@@ -132,7 +128,7 @@ export default {
       ]
     };
   },
-  props: ['id'],
+  props: ['id', 'status'],
   components: {
   },
   created () {
@@ -143,7 +139,22 @@ export default {
   methods: {
     getApiConfigFields (id) {
       this.$http.get('api/detail/', {api_id: id}).then(data => {
-        this.data = data.data.api_fields || [];
+        const allData = data.data.api_fields || [];
+        const disabled = [];
+        const abled = [];
+        allData.forEach((item) => {
+          if (this.isStartMode) {
+            disabled.push(item);
+          } else {
+            if (item['field_is_default'] === 1) {
+              disabled.push(item);
+            } else {
+              abled.push(item);
+            }
+          }
+        });
+        this.data = disabled;
+        this.newParamsData = abled;
       });
     },
     open () {
@@ -174,6 +185,13 @@ export default {
       } else if (typeof validateResult === 'boolean' && validateResult) {
         // 设置排序字段的值
         this.setSortFields();
+        if (!this.validateSort()) {
+          this.$notice.warning({
+            title: 'Warning',
+            message: '主键配置要在非主键配置之前'
+          });
+          return;
+        }
         this.sendRequest({
           api_id: this.id,
           api_fields: this.data.concat(this.newParamsData)
@@ -190,6 +208,20 @@ export default {
       const maxIndex = this.getMaxSortIndex();
       this.newParamsData.forEach((item, index) => {
         item['field_sort'] = index + maxIndex + 1;
+      });
+    },
+    validateSort () {
+      let notKeySortMin = Infinity;
+      // 校验顺序
+      return this.newParamsData.every((item) => {
+        if (item['field_is_primary_key'] === 0) {
+          if (item['field_sort'] < notKeySortMin) {
+            notKeySortMin = item['field_sort'];
+          }
+          return true;
+        } else if (item['field_is_primary_key'] === 1) {
+          return item['field_sort'] < notKeySortMin;
+        }
       });
     },
     paramsValidate () {
@@ -215,7 +247,6 @@ export default {
         this.getApiConfigFields(this.id);
         // 清空缓存
         this.newParamsData = [];
-        this.close();
       });
     },
     getDefaultRow () {
@@ -226,9 +257,9 @@ export default {
         field_type: 'string',
         field_desc: '',
         field_isnull: 1,
-        field_is_default: false,
+        field_is_default: 0,
         field_api_type: 'string',
-        field_is_primary_key: false
+        field_is_primary_key: 0
       };
     },
     addParams () {
@@ -237,6 +268,11 @@ export default {
     },
     deleteParams (index) {
       this.newParamsData.splice(index, 1);
+    }
+  },
+  computed: {
+    isStartMode () {
+      return this.status === 2;
     }
   },
   watch: {
