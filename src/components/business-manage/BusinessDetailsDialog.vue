@@ -5,10 +5,9 @@
       :close-on-click-modal="false"
       :before-close="close"
       :visible.sync="dialogVisible"
-      width="60%"
     >
       <div class="dialog-body">
-        <el-form ref="business-details-form" :model="copyData" label-width="200px"  size="mini" :rules="rules">
+        <el-form ref="business-details-form" :model="copyData" label-width="150px"  size="mini" :rules="rules">
           <el-row>
             <el-col :span="12">
               <el-form-item label="业务名称" prop="bname">
@@ -263,23 +262,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .business-details-dialog {
-    .dialog-body {
-      max-height: 500px;
-      min-width: 600px;
+  /deep/ .business-details-dialog {
+    min-width: 600px;
+    width: 60%;
+    .el-dialog__body {
+      max-height: 400px;
       overflow: auto;
-      .-etl-list-group {
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        .list-item {
-          flex: 0 0 48%;
-          margin: 10px 0;
-          .title {
-            flex: 0 0 150px;
-          }
-        }
-      }
+    }
+    .dialog-body {
+      min-width: 800px;
     }
   }
 </style>
