@@ -15,4 +15,17 @@ function createScript (src, cb) {
   };
 }
 
-export { createScript };
+function isPlainObject (obj) {
+  if (Object.keys) {
+    return Object.keys(obj).length > 0;
+  } else {
+    for (let i in obj) {
+      if (Object.hasOwnProperty(i)) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
+export { createScript, isPlainObject };

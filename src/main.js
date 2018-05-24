@@ -3,11 +3,13 @@
 import Vue from 'vue';
 import App from './App';
 
+import store from './store';
+
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 
 import Http from '@/assets/js/utils/http';
-import GlobalDataService from '@/assets/js/globalDataService';
+import { isPlainObject } from '@/assets/js/utils/utils.js';
 
 // 引入Element-UI  全部加载
 // import ElementUI from 'element-ui';
@@ -76,17 +78,13 @@ function getUserMsg () {
     });
   });
 }
-
 // 用户信息获取的
 router.beforeEach((to, from, next) => {
-  if (!GlobalDataService.getGlobalData().userMsg) {
+  if (!isPlainObject(store.state.userMsg)) {
     getUserMsg().then(user => {
-      GlobalDataService.setGlobalData(user);
-      GlobalDataService.setGlobalData({
-        userMsg: user
-      });
+      store.dispatch('setUserMsg', user);
       next();
-    }, error => {
+    }).catch(error => {
       next(error);
     });
   } else {
@@ -128,6 +126,7 @@ requireComponent.keys().forEach(fileName => {
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'

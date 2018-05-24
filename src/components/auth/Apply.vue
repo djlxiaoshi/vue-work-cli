@@ -4,7 +4,7 @@
       <ul class="-etl-list-group">
         <li class="list-item">
           <span class="title">当前角色</span>
-          <div class="value">{{ globalData.role_name }}</div>
+          <div class="value">{{ userMsg.role_name }}</div>
         </li>
         <li class="list-item my-business">
           <span class="title">当前业务</span>
@@ -49,17 +49,14 @@
 
 <script>
 import { roleConfig } from '@/config/config';
-import globalDataService from '@/assets/js/globalDataService';
 import { Notification } from 'element-ui';
-const globalData = globalDataService.getGlobalData();
+import { mapGetters } from 'vuex';
 export default {
   name: 'Apply',
   data () {
     return {
-      role: globalData.role_id,
       businessId: undefined,
       reason: '',
-      globalData: globalData,
       roleConfig: roleConfig,
       businessList: [],
       myBusinessList: [],
@@ -117,6 +114,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'userMsg'
+    ]),
     currentBusiness () {
       return this.myBusinessList.length ? this.myBusinessList.map(item => item['bname']).join('、') : '无';
     }

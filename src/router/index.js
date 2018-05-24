@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import { routes, mainRoutes } from './routes';
-import globalDataService from '@/assets/js/globalDataService';
+
+import store from '../store/index';
 
 const path = require('path');
 Vue.use(Router);
@@ -16,8 +17,7 @@ router.beforeEach((to, from, next) => {
   const pathArr = to.fullPath.split('/');
   pathArr.shift();
   const topNavList = getTopNavList(mainRoutes, pathArr);
-  globalDataService.setGlobalHeader(topNavList);
-  globalDataService.globalHeaderChange(topNavList);
+  store.dispatch('setGlobalHeader', topNavList);
   next();
 });
 

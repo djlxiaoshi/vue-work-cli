@@ -5,7 +5,7 @@
     </div>
     <div class="app-main-right" :class="rightWidthClass">
       <div class="header">
-        <AppHeader :tabList="topNavList"></AppHeader>
+        <AppHeader :tabList="globalHeader"></AppHeader>
       </div>
       <div class="body">
         <router-view/>
@@ -17,7 +17,7 @@
 <script>
 import AppSidebar from '@/components/app-sidebar/AppSidebar';
 import AppHeader from '@/components/app-header/AppHeader';
-import globalDataService from '@/assets/js/globalDataService';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'AppMain',
@@ -38,12 +38,11 @@ export default {
     });
   },
   created () {
-    this.topNavList = globalDataService.getGlobalHeader();
-    globalDataService.onGlobalHeaderChange().subscribe(data => {
-      this.topNavList = data;
-    });
   },
   computed: {
+    ...mapGetters([
+      'globalHeader'
+    ]),
     rightWidthClass () {
       return this.isCollapse ? 'right-collapse-width' : 'right-width';
     },

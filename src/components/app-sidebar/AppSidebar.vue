@@ -14,7 +14,7 @@
       class="body"
       :collapse="isCollapse" >
       <template v-for="(route) in routesConfig">
-        <template v-if="!route['hidden'] && (!route['permission'] || route['permission'].includes(globalData.role_id))">
+        <template v-if="!route['hidden'] && (!route['permission'] || route['permission'].includes(userMsg.role_id))">
           <el-submenu class="el-submenu-title"
                       :index="route.path"
                       :key="route.path"
@@ -26,7 +26,7 @@
             </template>
             <el-menu-item
               v-for="(child) in route['children']"
-              v-if="!child['hidden'] && (!child['permission'] || child['permission'].includes(globalData.role_id))"
+              v-if="!child['hidden'] && (!child['permission'] || child['permission'].includes(userMsg.role_id))"
               :class="{'is-active': isActive(`${route.path}/${child['path']}`)}"
               :index="`${route.path}/${child['path']}`"
               :key="`${route.path}/${child['path']}`"
@@ -55,14 +55,13 @@
 
 <script>
 import { mainRoutes } from '@/router/routes';
-import globalDataService from '@/assets/js/globalDataService';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'AppSidebar',
   data () {
     return {
       routesConfig: mainRoutes,
-      globalData: globalDataService.getGlobalData(),
       defaultOpens: []
     };
   },
@@ -81,6 +80,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'userMsg'
+    ]),
     getDefaultOpens () {
       const matched = this.$route.matched;
       return matched.map(item => {

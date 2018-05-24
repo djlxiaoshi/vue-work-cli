@@ -15,7 +15,7 @@ import Plugins from '@/components/plugins/Plugins';
 
 import NotFound from '@/components/shared/app-exception/NotFound';
 
-import globalDataService from '@/assets/js/globalDataService';
+import store from '../store/index';
 
 /*
 * 配置字段说明 Vue-router 部分 参考此链接 https://router.vuejs.org/zh-cn/api/options.html#routes
@@ -25,8 +25,6 @@ import globalDataService from '@/assets/js/globalDataService';
 * childrenPosition: 如果有子路由，子路由是在侧边栏还是在顶部
 * permission: 拥有该菜单的角色ID
 * */
-
-const globalData = globalDataService.getGlobalData();
 
 const mainRoutes = [
   {
@@ -38,8 +36,9 @@ const mainRoutes = [
     permission: [2, 3, 99], // 普通用用户不能查看
     // 避免直接通过浏览器导航栏进入
     beforeEnter: (to, from, next) => {
+      const userMsg = store.state.userMsg;
       const permission = [2, 3, 99];
-      permission.includes(globalData.role_id) ? next() : next({
+      permission.includes(userMsg.role_id) ? next() : next({
         path: '/auth' // 这里要跳转到一个所有用户都可以进入的路由
       });
     }
@@ -61,8 +60,9 @@ const mainRoutes = [
     permission: [99],
     // 避免直接通过浏览器导航栏进入
     beforeEnter: (to, from, next) => {
+      const userMsg = store.state.userMsg;
       const permission = [99];
-      permission.includes(globalData.role_id) ? next() : next('/');
+      permission.includes(userMsg.role_id) ? next() : next('/');
     }
   },
   {
@@ -74,9 +74,10 @@ const mainRoutes = [
     permission: [99],
     // 避免直接通过浏览器导航栏进入
     beforeEnter: (to, from, next) => {
+      const userMsg = store.state.userMsg;
       const permission = [99];
-      permission.includes(globalData.role_id) ? next() : next({
-        path: 'auth/'
+      permission.includes(userMsg.role_id) ? next() : next({
+        path: '/auth'
       });
     }
   },
@@ -107,8 +108,9 @@ const mainRoutes = [
         permission: [2, 3, 99],
         // 避免直接通过浏览器导航栏进入
         beforeEnter: (to, from, next) => {
+          const userMsg = store.state.userMsg;
           const permission = [2, 3, 99];
-          permission.includes(globalData.role_id) ? next() : next({
+          permission.includes(userMsg.role_id) ? next() : next({
             path: '/'
           });
         }

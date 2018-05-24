@@ -9,7 +9,7 @@
       @select="handleSelect">
       <el-menu-item
         v-for="(tab, index) in tabList"
-        v-if="!tab['hidden'] && (!tab['permission'] || tab['permission'].includes(globalData.role_id))"
+        v-if="!tab['hidden'] && (!tab['permission'] || tab['permission'].includes(userMsg.role_id))"
         :key="index"
         :index="tab['name']"
         :route="{path: tab['path'] }"
@@ -17,20 +17,19 @@
       >{{ tab['label'] }}</el-menu-item>
     </el-menu>
     <div class="header-user">
-      <span class="username">{{globalData.user_cname}}</span>
+      <span class="username">{{userMsg.user_cname}}</span>
       <span class="logout fa fa-sign-out" @click="logout()" title="退出登录"></span>
     </div>
   </div>
 </template>
 
 <script>
-import GlobalDataService from '@/assets/js/globalDataService';
 import ENV from '@/environment/environment';
+import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'AppHeader',
   data () {
     return {
-      globalData: GlobalDataService.getGlobalData()
     };
   },
   props: {
@@ -48,21 +47,26 @@ export default {
   created () {
   },
   mounted () {
-
   },
   methods: {
+    ...mapActions([
+      'clearUserMsg'
+    ]),
     handleSelect (tab) {
       this.$emit('onHeaderTabChange', tab);
     },
     logout () {
       // 清除全局保存的用户信息
-      GlobalDataService.setGlobalData({
-        userMsg: null
-      });
+      this.clearUserMsg();
       this.$http.get('user/logout/').then(res => {
         window.location.href = ENV.SSO;
       });
     }
+  },
+  computed: {
+    ...mapGetters([
+      'userMsg'
+    ])
   }
 };
 </script>
