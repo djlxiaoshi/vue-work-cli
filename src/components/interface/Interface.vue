@@ -59,6 +59,7 @@ export default {
         { label: '数据库表', field: 'api_table' },
         { label: '数据库表注释', field: 'api_table_desc' },
         { label: '状态名称', field: 'status_name' },
+        { label: '最后更新人', field: 'updater_user_info' },
         { label: '操作', field: 'operate', width: 150, fixed: 'right' }
       ],
       APIList: [],
@@ -116,6 +117,7 @@ export default {
     change ({value, index, option, options}) {
       if (index === 0) {
         this.getAPIList(value);
+        this.bid = value;
       }
     },
     apiEdit (row) {
@@ -144,12 +146,18 @@ export default {
           return;
         }
       }
-      this.$http.post('api/switch/status/', {
-        api_id: row.id,
-        status: status
-      }).then(res => {
-        row.status = status;
-      });
+      this.$confirm(`确定${flag ? '开启' : '禁用'}吗?`, '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.post('api/switch/status/', {
+          api_id: row.id,
+          status: status
+        }).then(res => {
+          row.status = status;
+        });
+      }).catch(() => {});
     },
     getApiConfigFields (id) {
       return this.$http.get('api/detail/', {api_id: id});

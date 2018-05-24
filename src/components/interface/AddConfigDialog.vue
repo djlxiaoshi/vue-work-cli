@@ -19,7 +19,15 @@
           <tbody class="disabled-drag">
             <tr v-for="row in data" :key="row['id']" style="border-bottom: 1px solid #e5e5e5; height: 40px;">
               <td v-for="columns in tableColumns" :key="columns['field']">
-                {{ row[columns['field']] }}
+                <template v-if="columns['field']=== 'field_is_primary_key' ">
+                  {{ row['field_is_primary_key'] == 0 ? '否' : '是'}}
+                </template>
+                <template v-else-if="columns['field']=== 'field_isnull' ">
+                  {{ row['field_isnull'] == 0 ? '否' : '是'}}
+                </template>
+                <template v-else>
+                  {{ row[columns['field']] }}
+                </template>
               </td>
             </tr>
           </tbody>
@@ -226,19 +234,31 @@ export default {
     },
     paramsValidate () {
       for (const row of this.newParamsData) {
-        const fieldNameIsVld = !row['field_name'].trim();
-        const defaultValueIsVld = !row['field_default_value'].trim();
-        const fieldDesc = !row['field_desc'].trim();
-
-        if (fieldNameIsVld || defaultValueIsVld || fieldDesc) {
-          this.$set(row, '_error', true);
+        const fieldName = row['field_name'].trim();
+        const defaultValue = row['field_default_value'].trim();
+        const fieldDesc = row['field_desc'].trim();
+        if (fieldName) {
+          if (/[^a-zA-Z]/g.test(fieldName)) {
+            this.$set(row, '_error', true);
+            return '字段名称仅支持英文字母';
+          }
         } else {
-          this.$set(row, '_error', false);
+          this.$set(row, '_error', true);
+          return `字段名称不能为空`;
         }
-
-        if (fieldNameIsVld) return `字段名称不能为空`;
-        if (defaultValueIsVld) return `默认值不能为空`;
-        if (fieldDesc) return `字段说明不能为空`;
+        if (defaultValue) {
+          if (/[^a-zA-Z0-9.]/g.test(defaultValue)) {
+            this.$set(row, '_error', true);
+            return '默认值仅支持字母数字和\'.\'';
+          }
+        } else {
+          this.$set(row, '_error', true);
+          return `默认值不能为空`;
+        }
+        if (!fieldDesc) {
+          this.$set(row, '_error', true);
+          return `字段说明不能为空`;
+        }
       }
       return true;
     },

@@ -92,11 +92,16 @@
 export default {
   name: 'AddApi',
   data () {
+    const isCharacter = (rule, value, callback) => {
+      if (!/[a-zA-Z]/g.test(value)) {
+        return callback(new Error('仅支持英文字母'));
+      }
+    };
     return {
       dialogVisible: false,
       rules: {
         api: [
-          { required: true, message: '请输入接口名称', trigger: 'blur' }
+          { required: true, message: '请输入正确接口名称（仅支持英文字母）', trigger: 'blur', validator: isCharacter }
         ],
         api_desc: [
           { required: true, message: '请输入接口中文注释', trigger: 'blur' }

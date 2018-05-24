@@ -26,6 +26,7 @@
     "gettabledatasize": "0.1.0",
     "rxjs": "6.0.0",
     "vue": "2.5.16",
+    "vue-masked-input": "^0.5.2",
     "vue-router": "3.0.1",
     "vuex": "3.0.1"
   },
