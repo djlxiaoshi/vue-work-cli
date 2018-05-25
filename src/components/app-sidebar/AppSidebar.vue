@@ -13,7 +13,6 @@
 
 <script>
 import { mainRoutes } from '@/router/routes';
-import AppMenuItem from './AppMenuItem';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -26,7 +25,6 @@ export default {
   },
   props: ['isCollapse'],
   components: {
-    AppMenuItem
   },
   mounted () {
   },

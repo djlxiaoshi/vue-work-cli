@@ -3,9 +3,11 @@
     custom-class="interface-add-config-dialog"
     title="接口配置"
     :visible.sync="dialogVisible"
+    :close-on-click-modal="false"
+    :before-close="close"
     width="70%"
   >
-    <div class="dialog-body">
+    <div class="dialog-body" v-loading="loading">
       <div class="tool-bar">
         <el-button type="primary" style="margin-left: auto;" size="mini" @click="addParams()">新增参数</el-button>
       </div>
@@ -109,6 +111,7 @@ export default {
   data () {
     return {
       dialogVisible: false,
+      loading: false,
       tableColumns: [
         { label: '字段名称', field: 'field_name', width: 100 },
         { label: '字段默认值', field: 'field_default_value', width: 100 },
@@ -147,7 +150,9 @@ export default {
   },
   methods: {
     getApiConfigFields (id) {
+      this.loading = true;
       this.$http.get('api/detail/', {api_id: id}).then(data => {
+        this.loading = false;
         const allData = data.data.api_fields || [];
         const disabled = [];
         const abled = [];
@@ -171,6 +176,7 @@ export default {
     },
     close () {
       this.dialogVisible = false;
+      this.loading = false;
     },
     sort (current, dir) {
       const index = this.newParamsData.indexOf(current);
@@ -264,7 +270,10 @@ export default {
       return true;
     },
     sendRequest (params) {
-      this.$http.post('api/fields/update/', params).then(res => {
+      this.loading = true;
+      const url = this.status === 2 ? 'api/fields/running_update/' : 'api/fields/update/';
+      this.$http.post(url, params).then(res => {
+        this.loading = false;
         this.getApiConfigFields(this.id);
         // 清空缓存
         this.newParamsData = [];

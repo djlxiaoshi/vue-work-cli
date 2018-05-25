@@ -99,13 +99,6 @@ const mainRoutes = [
         name: 'myApplication',
         label: '我的申请',
         component: MyApplication
-        // children: [
-        //   {
-        //     path: 'apply',
-        //     name: 'Apply',
-        //     label: '权限申请',
-        //     component: Apply
-        //   }]
       },
       {
         path: 'check',

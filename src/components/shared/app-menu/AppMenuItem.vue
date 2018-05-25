@@ -3,6 +3,7 @@
     <template v-for="route in menus">
       <template v-if="!route['hidden'] && (!route['permission'] || route['permission'].includes(licenseKey))">
         <el-submenu
+          :class="{'is-active': isActive(getFullPath(route.path))}"
           v-if="route['children'] && route['childrenPosition'] !== 'top'"
           class="el-submenu-title"
           :index="route.path"
@@ -10,7 +11,7 @@
         >
           <template slot="title">
             <i class="fa icon" :class="route['icon']"></i>
-            <span slot="title">{{route['label']}}</span>
+            <span slot="title" class="submenu-title">{{route['label']}}</span>
           </template>
           <template v-if="route['children'] && route['children'].length">
             <AppMenuItem :menus="route['children']" :basePath="getFullPath(route['path'])"></AppMenuItem>
@@ -87,12 +88,12 @@ export default {
         }
       }
     }
-    .is-opened {
-      .el-submenu__title {
-        color: #fff !important;
-      }
-    }
     .is-active {
+      > .el-submenu__title  {
+        .submenu-title {
+          color: #fff !important;
+        }
+      }
       color: #fff !important;
     }
   }
