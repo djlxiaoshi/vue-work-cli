@@ -99,6 +99,13 @@ const mainRoutes = [
         name: 'myApplication',
         label: '我的申请',
         component: MyApplication
+        // children: [
+        //   {
+        //     path: 'apply',
+        //     name: 'Apply',
+        //     label: '权限申请',
+        //     component: Apply
+        //   }]
       },
       {
         path: 'check',
@@ -111,7 +118,7 @@ const mainRoutes = [
           const userMsg = store.state.userMsg;
           const permission = [2, 3, 99];
           permission.includes(userMsg.role_id) ? next() : next({
-            path: '/'
+            path: '/auth'
           });
         }
       },
@@ -127,7 +134,7 @@ const mainRoutes = [
     name: 'Plugins',
     label: '插件',
     component: Plugins,
-    permission: [] // 隐藏  浏览器导航栏可以进入
+    hidden: true // 隐藏  浏览器导航栏可以进入
   },
   {
     path: '',

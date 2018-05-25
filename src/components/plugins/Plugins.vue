@@ -1,10 +1,24 @@
 <template>
   <div class="app-plugins">
     <AppOptions :options="options" @optionsSelectedChange="change($event)" @optionsReady="optionsReady()"></AppOptions>
+
+    <el-menu
+      :router="true"
+      :collapse-transition="false"
+      background-color="#001529"
+      text-color="#a3b0bf"
+      active-text-color="#fff"
+      class="body"
+    >
+      <AppMenuItem :menus="routesConfig"></AppMenuItem>
+    </el-menu>
   </div>
 </template>
 
 <script>
+import AppMenuItem from '@/components/app-sidebar/AppMenuItem';
+import { mainRoutes } from '@/router/routes';
+
 export default {
   data () {
     return {
@@ -74,12 +88,14 @@ export default {
             }]
           }]
         }
-      ]
+      ],
+      routesConfig: mainRoutes
     };
   },
   mounted () {
   },
   components: {
+    AppMenuItem
   },
   methods: {
     change (data) {

@@ -15,7 +15,7 @@ function createScript (src, cb) {
   };
 }
 
-function isPlainObject (obj) {
+function isNullObject (obj) {
   if (Object.keys) {
     return Object.keys(obj).length > 0;
   } else {
@@ -28,4 +28,25 @@ function isPlainObject (obj) {
   }
 }
 
-export { createScript, isPlainObject };
+/* 是否是整数 */
+function isInteger (value) {
+  return Number.isInteger(value);
+}
+
+/* 是否是英文字母 */
+function isVariable (value) {
+  return !/^[0-9]|[^a-zA-Z0-9_]/g.test(value);
+}
+
+/* 是否是ip */
+function isIp (value) {
+  return /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value);
+}
+
+export {
+  createScript,
+  isNullObject,
+  isInteger,
+  isVariable,
+  isIp
+};

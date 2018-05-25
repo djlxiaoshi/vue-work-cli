@@ -8,8 +8,7 @@ import store from './store';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 
-import Http from '@/assets/js/utils/http';
-import { isPlainObject } from '@/assets/js/utils/utils.js';
+import { isNullObject } from 'utils';
 
 // 引入Element-UI  全部加载
 // import ElementUI from 'element-ui';
@@ -19,6 +18,8 @@ import { Button, Select, Option, Table, TableColumn, Input, RadioButton, Checkbo
   RadioGroup, Tabs, Popover, Menu, MenuItem, Submenu, Card, Dialog, Pagination, Loading, Cascader, Form, FormItem, Switch, Col, Row } from 'element-ui';
 
 import router from './router';
+
+import ETLPlugin from './plugins/ETLCommonPlugin';
 
 // element-ui 默认样式文件
 // import 'element-ui/lib/theme-chalk/index.css';
@@ -64,14 +65,15 @@ Vue.prototype.$loading = Loading.service;
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$confirm = MessageBox.confirm;
 
-Vue.prototype.$http = Http;
 Vue.prototype.$notice = Notification;
+
+Vue.use(ETLPlugin);
 
 // 这里设置路由守卫，只有等获取到用户信息之后，才能够进入应用
 // 所以这里整个应用要包裹在一个路由之下
 function getUserMsg () {
   return new Promise((resolve, reject) => {
-    Http.get('user/info/').then(res => {
+    Vue.http.get('user/info/').then(res => {
       resolve(res.data);
     }).catch(error => {
       reject(error);
@@ -80,7 +82,7 @@ function getUserMsg () {
 }
 // 用户信息获取的
 router.beforeEach((to, from, next) => {
-  if (!isPlainObject(store.state.userMsg)) {
+  if (!isNullObject(store.state.userMsg)) {
     getUserMsg().then(user => {
       store.dispatch('setUserMsg', user);
       next();

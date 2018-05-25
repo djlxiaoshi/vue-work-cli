@@ -20,10 +20,10 @@
             <tr v-for="row in data" :key="row['id']" style="border-bottom: 1px solid #e5e5e5; height: 40px;">
               <td v-for="columns in tableColumns" :key="columns['field']">
                 <template v-if="columns['field']=== 'field_is_primary_key' ">
-                  {{ row['field_is_primary_key'] == 0 ? '否' : '是'}}
+                  {{row['field_is_primary_key'] | statusFilters}}
                 </template>
                 <template v-else-if="columns['field']=== 'field_isnull' ">
-                  {{ row['field_isnull'] == 0 ? '否' : '是'}}
+                 {{ row['field_isnull'] | statusFilters}}
                 </template>
                 <template v-else>
                   {{ row[columns['field']] }}
@@ -103,6 +103,7 @@
 
 <script>
 import { getTableDataSize } from 'gettabledatasize';
+import { isVariable } from 'utils';
 export default {
   name: 'AddConfigDialog',
   data () {
@@ -238,9 +239,9 @@ export default {
         const defaultValue = row['field_default_value'].trim();
         const fieldDesc = row['field_desc'].trim();
         if (fieldName) {
-          if (/[^a-zA-Z]/g.test(fieldName)) {
+          if (!isVariable(fieldName)) {
             this.$set(row, '_error', true);
-            return '字段名称仅支持英文字母';
+            return '字段名称仅支持英文字母和下划线且不能以数字开头';
           }
         } else {
           this.$set(row, '_error', true);

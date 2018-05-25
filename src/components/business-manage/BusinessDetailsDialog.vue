@@ -72,19 +72,27 @@
 </template>
 
 <script>
-import { isInteger, isIp } from '@/assets/js/utils/validator';
+import { isInteger, isIp } from 'utils';
 export default {
   name: 'BusinessDetailsDialog',
   data () {
     const _isInteger = (rule, value, callback) => {
-      if (!isInteger(value)) {
+      if (!value) {
+        return callback(new Error('必填'));
+      } else if (!isInteger(value)) {
         return callback(new Error('请输入整数'));
+      } else {
+        callback();
       }
     };
 
     const _isIp = (rule, value, callback) => {
-      if (!isIp(value)) {
+      if (!value) {
+        return callback(new Error('必填'));
+      } else if (!isIp(value)) {
         return callback(new Error('请输入正确ip'));
+      } else {
+        callback();
       }
     };
     return {
@@ -101,7 +109,7 @@ export default {
           { required: true, message: '请输入kafka连接ip', trigger: 'blur' }
         ],
         bkafka_port: [
-          { required: true, message: '请输入正确的连接端口（整数）', trigger: 'blur', validator: _isInteger }
+          { trigger: 'blur', validator: _isInteger }
         ],
         bkafka_user: [
           { required: true, message: '请输入kafka连接用户名', trigger: 'blur' }
@@ -110,10 +118,10 @@ export default {
           { required: true, message: '请输入kafka连接密钥', trigger: 'blur' }
         ],
         bhive_ip: [
-          { required: true, message: '请输入正确hive连接ip', trigger: 'blur', validator: _isIp }
+          { trigger: 'blur', validator: _isIp }
         ],
         bhive_port: [
-          { required: true, message: '请输入正确的连接端口（整数）', trigger: 'blur', validator: _isInteger }
+          { trigger: 'blur', validator: _isInteger }
         ],
         bhive_user: [
           { required: true, message: '请输入hive用户名', trigger: 'blur' }
@@ -122,10 +130,10 @@ export default {
           { required: true, message: '请输入hive登录密码', trigger: 'blur' }
         ],
         bimpala_ip: [
-          { required: true, message: '请输入正确impala连接ip', trigger: 'blur', validator: _isIp }
+          { trigger: 'blur', validator: _isIp }
         ],
         bimpala_port: [
-          { required: true, message: '请输入正确的连接端口（整数）', trigger: 'blur', validator: _isInteger }
+          { trigger: 'blur', validator: _isInteger }
         ],
         bimpala_user: [
           { required: true, message: '请输入impala用户', trigger: 'blur' }

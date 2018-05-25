@@ -89,19 +89,24 @@
 </template>
 
 <script>
+import { isVariable } from 'utils';
 export default {
   name: 'AddApi',
   data () {
-    const isCharacter = (rule, value, callback) => {
-      if (!/[a-zA-Z]/g.test(value)) {
-        return callback(new Error('仅支持英文字母'));
+    const _isCharacter = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请输入接口名称'));
+      } else if (!isVariable(value)) {
+        return callback(new Error('仅支持字母、数字和下划线且不能以数字开头'));
+      } else {
+        callback();
       }
     };
     return {
       dialogVisible: false,
       rules: {
         api: [
-          { required: true, message: '请输入正确接口名称（仅支持英文字母）', trigger: 'blur', validator: isCharacter }
+          { trigger: 'blur', validator: _isCharacter }
         ],
         api_desc: [
           { required: true, message: '请输入接口中文注释', trigger: 'blur' }
