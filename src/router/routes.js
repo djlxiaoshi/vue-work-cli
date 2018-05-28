@@ -2,18 +2,17 @@
  * @Author JohnLi
  * @Date 2018/4/19 17:46
  */
-import AppMain from '@/components/app-main/AppMain';
-import Interface from '@/components/interface/Interface';
-import Database from '@/components/database/Database';
-import Auth from '@/components/auth/Auth';
-import Apply from '@/components/auth/Apply';
-import MyApplication from '@/components/auth/MyApplication';
-import Check from '@/components/auth/Check';
-import Settings from '@/components/auth/Settings';
-import BusinessList from '@/components/business-manage/BusinessList';
-import Plugins from '@/components/plugins/Plugins';
-
-import NotFound from '@/components/shared/app-exception/NotFound';
+import AppMain from '@/pages/app-main/AppMain';
+import Interface from '@/pages/interface/Interface';
+import Database from '@/pages/database/Database';
+import Auth from '@/pages/auth/Auth';
+import Apply from '@/pages/auth/Apply';
+import MyApplication from '@/pages/auth/MyApplication';
+import Check from '@/pages/auth/Check';
+import Settings from '@/pages/auth/Settings';
+import BusinessList from '@/pages/business-manage/BusinessList';
+import Plugins from '@/pages/plugins/Plugins';
+import NotFound from '@/components/app-exception/NotFound.vue';
 
 import store from '../store/index';
 

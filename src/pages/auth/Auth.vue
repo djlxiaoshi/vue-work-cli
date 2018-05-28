@@ -5,18 +5,13 @@
 </template>
 
 <script>
-import AppHeader from '@/components/app-header/AppHeader';
-
 export default {
   name: 'Auth',
   data () {
     return {
     };
   },
-  props: [],
-  components: {
-    AppHeader
-  }
+  props: []
 };
 </script>
 

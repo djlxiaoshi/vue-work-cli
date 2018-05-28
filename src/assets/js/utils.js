@@ -30,7 +30,8 @@ function isNullObject (obj) {
 
 /* 是否是整数 */
 function isInteger (value) {
-  return Number.isInteger(value);
+  // + 将字符串转换成对应的数值
+  return Number.isInteger(+value);
 }
 
 /* 是否是英文字母 */

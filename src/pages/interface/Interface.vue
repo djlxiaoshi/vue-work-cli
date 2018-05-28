@@ -54,10 +54,11 @@ export default {
         { label: '业务名称', field: 'bname' },
         { label: '接口名称', field: 'api' },
         { label: '接口中文注释', field: 'api_desc' },
-        { label: '接口数据类型', field: 'api_data_type' },
         { label: '接口创建人信息', field: 'creater_user_info' },
         { label: '数据库表', field: 'api_table' },
         { label: '数据库表注释', field: 'api_table_desc' },
+        { label: 'api数据类型', field: 'api_data_type' },
+        { label: 'api接口数据量', field: 'api_flume_template' },
         { label: '状态名称', field: 'status_name' },
         { label: '最后更新人', field: 'updater_user_info' },
         { label: '操作', field: 'operate', width: 150, fixed: 'right' }

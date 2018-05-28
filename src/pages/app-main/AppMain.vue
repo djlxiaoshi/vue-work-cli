@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import AppSidebar from '@/components/app-sidebar/AppSidebar';
-import AppHeader from '@/components/app-header/AppHeader';
+import AppSidebar from '@/pages/app-sidebar/AppSidebar';
+import AppHeader from '@/pages/app-header/AppHeader';
 import { mapGetters } from 'vuex';
 
 export default {

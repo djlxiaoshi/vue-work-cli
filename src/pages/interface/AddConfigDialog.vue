@@ -207,9 +207,12 @@ export default {
           });
           return;
         }
+        /*
+        * 如果是启用状态则只传递增加的条目，如果是禁用或者待启用状态则传入所有的条目
+        * */
         this.sendRequest({
           api_id: this.id,
-          api_fields: this.data.concat(this.newParamsData)
+          api_fields: this.status === 2 ? this.newParamsData : this.data.concat(this.newParamsData)
         });
       }
     },
