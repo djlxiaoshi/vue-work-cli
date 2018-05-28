@@ -4,7 +4,7 @@
  */
 import axios from 'axios';
 import { Notification } from 'element-ui';
-import ENV from '@/environment/dev.env';
+import ENV from '@/environment/environment';
 
 const CODE = {
   SUCCEE: 0,
