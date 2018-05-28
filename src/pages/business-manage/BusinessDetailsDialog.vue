@@ -23,6 +23,9 @@
             <el-form-item label="kafka连接密钥" prop="bkafka_pkey">
               <el-input v-model="copyData.bkafka_pkey" placeholder="kafka连接密钥" size="small" type="textarea" :autosize="{ minRows: 1, maxRows: 4}"></el-input>
             </el-form-item>
+            <el-form-item label="hive数据库名" prop="bhive_db_name">
+              <el-input v-model="copyData.bhive_db_name" placeholder="hive数据库名" size="small"></el-input>
+            </el-form-item>
             <el-form-item label="hive连接ip" prop="bhive_ip">
               <el-input v-model="copyData.bhive_ip" placeholder="hive连接ip" size="small"></el-input>
             </el-form-item>
@@ -35,15 +38,15 @@
             <!--<el-form-item label="hive登录密码" prop="bhive_password">-->
               <!--<el-input v-model="copyData.bhive_password" placeholder="hive登录密码" size="small"></el-input>-->
             <!--</el-form-item>-->
+            <el-form-item label="impala数据库名" prop="bimpala_db_name">
+              <el-input v-model="copyData.bimpala_db_name" placeholder="impala数据库名" size="small"></el-input>
+            </el-form-item>
             <el-form-item label="impala连接ip" prop="bimpala_ip">
               <el-input v-model="copyData.bimpala_ip" placeholder="impala连接ip" size="small"></el-input>
             </el-form-item>
-            <!--<el-form-item label="impala端口" prop="bimpala_port">-->
-              <!--<el-input v-model="copyData.bimpala_port" placeholder="impala端口" size="small"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="impala用户" prop="bimpala_user">-->
-              <!--<el-input v-model="copyData.bimpala_user" placeholder="impala用户" size="small"></el-input>-->
-            <!--</el-form-item>-->
+            <el-form-item label="impala端口" prop="bimpala_port">
+              <el-input v-model="copyData.bimpala_port" placeholder="impala端口" size="small"></el-input>
+            </el-form-item>
             <el-form-item label="zookeeper集群地址" prop="bzk_host">
               <el-input v-model="copyData.bzk_host" placeholder="zookeeper集群地址" size="small"></el-input>
             </el-form-item>
@@ -134,9 +137,6 @@ export default {
         ],
         bimpala_port: [
           { trigger: 'blur', validator: _isInteger }
-        ],
-        bimpala_user: [
-          { required: true, message: '请输入impala用户', trigger: 'blur' }
         ],
         bzk_host: [
           { required: true, message: '请输入zookeeper集群地址', trigger: 'blur' }
