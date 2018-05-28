@@ -33,7 +33,6 @@ export default {
         { label: 'kafka连接端口', field: 'bkafka_port' },
         { label: 'kafka连接用户名', field: 'bkafka_user' },
         { label: 'kafka连接密码', field: 'bkafka_password' },
-        { label: 'kafka 业务 topic', field: 'bkafka_topic' },
         { label: 'hive连接ip', field: 'bhive_ip' },
         { label: 'hive连接端口', field: 'bhive_port' },
         { label: 'hive用户名', field: 'bhive_user' },

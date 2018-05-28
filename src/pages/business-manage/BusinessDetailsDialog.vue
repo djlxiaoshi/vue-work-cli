@@ -50,8 +50,8 @@
             <el-form-item label="zookeeper集群地址" prop="bzk_host">
               <el-input v-model="copyData.bzk_host" placeholder="zookeeper集群地址" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="zookeeper路径" prop="bzk_path">
-              <el-input v-model="copyData.bzk_path" placeholder="zookeeper路径" size="small"></el-input>
+            <el-form-item label="zookeeper路径" prop="bzk_path" v-if="mode === 'edit' ">
+              <el-input v-model="copyData.bzk_path" placeholder="zookeeper路径" size="small" disabled></el-input>
             </el-form-item>
             <el-form-item label="hive表flume链接地址" prop="bflume_endpoint">
               <el-input v-model="copyData.bflume_endpoint" placeholder="hive表flume链接地址" size="small"></el-input>
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { isInteger, isIp } from 'utils';
+import { isInteger, isIp, isVariable } from 'utils';
 export default {
   name: 'BusinessDetailsDialog',
   data () {
@@ -98,6 +98,17 @@ export default {
         callback();
       }
     };
+
+    const _isVariable = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('必填'));
+      } else if (!isVariable(value)) {
+        return callback(new Error('数据库名只能包含字母数字和下划线且不能以数字开头!'));
+      } else {
+        callback();
+      }
+    };
+
     return {
       copyData: {},
       dialogVisible: false,
@@ -112,7 +123,7 @@ export default {
           { required: true, message: '请输入kafka连接ip', trigger: 'blur' }
         ],
         bkafka_port: [
-          { trigger: 'blur', validator: _isInteger }
+          { required: true, trigger: 'blur', validator: _isInteger }
         ],
         bkafka_user: [
           { required: true, message: '请输入kafka连接用户名', trigger: 'blur' }
@@ -120,11 +131,14 @@ export default {
         bkafka_pkey: [
           { required: true, message: '请输入kafka连接密钥', trigger: 'blur' }
         ],
+        bhive_db_name: [
+          { required: true, trigger: 'blur', validator: _isVariable }
+        ],
         bhive_ip: [
-          { trigger: 'blur', validator: _isIp }
+          { required: true, trigger: 'blur', validator: _isIp }
         ],
         bhive_port: [
-          { trigger: 'blur', validator: _isInteger }
+          { required: true, trigger: 'blur', validator: _isInteger }
         ],
         bhive_user: [
           { required: true, message: '请输入hive用户名', trigger: 'blur' }
@@ -132,11 +146,14 @@ export default {
         bhive_password: [
           { required: true, message: '请输入hive登录密码', trigger: 'blur' }
         ],
+        bimpala_db_name: [
+          { required: true, trigger: 'blur', validator: _isVariable }
+        ],
         bimpala_ip: [
-          { trigger: 'blur', validator: _isIp }
+          { required: true, trigger: 'blur', validator: _isIp }
         ],
         bimpala_port: [
-          { trigger: 'blur', validator: _isInteger }
+          { required: true, trigger: 'blur', validator: _isInteger }
         ],
         bzk_host: [
           { required: true, message: '请输入zookeeper集群地址', trigger: 'blur' }
@@ -234,9 +251,11 @@ export default {
       min-width: 800px;
       .el-form {
         display: flex;
+        justify-content: space-around;
         flex-wrap: wrap;
         .el-form-item {
           flex: 48%;
+          text-align: left;
         }
       }
     }

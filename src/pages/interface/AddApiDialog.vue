@@ -106,7 +106,7 @@ export default {
       dialogVisible: false,
       rules: {
         api: [
-          { trigger: 'blur', validator: _isCharacter }
+          { required: true, trigger: 'blur', validator: _isCharacter }
         ],
         api_desc: [
           { required: true, message: '请输入接口中文注释', trigger: 'blur' }
