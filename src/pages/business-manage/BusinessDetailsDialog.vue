@@ -7,22 +7,34 @@
       :visible.sync="dialogVisible"
     >
       <div class="dialog-body">
-        <el-form ref="business-details-form" :model="copyData" label-width="150px"  size="mini" :rules="rules">
+        <el-form ref="business-details-form" :model="copyData" label-width="180px"  size="mini" :rules="rules">
             <el-form-item label="业务名称" prop="bname">
               <el-input v-model="copyData.bname" placeholder="业务名称" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="kafka连接ip" prop="bkafka_ip">
-              <el-input v-model="copyData.bkafka_ip" placeholder="kafka连接ip" size="small"></el-input>
+            <el-form-item label="kafka连接ip(hive)" prop="bkafka_ip">
+              <el-input v-model="copyData.bkafka_ip" placeholder="kafka连接ip(hive)" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="kafka连接端口" prop="bkafka_port">
-              <el-input v-model="copyData.bkafka_port" placeholder="kafka连接端口" size="small"></el-input>
+            <el-form-item label="kafka连接端口(hive)" prop="bkafka_port">
+              <el-input v-model="copyData.bkafka_port" placeholder="kafka连接端口(hive)" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="kafka连接用户名" prop="bkafka_user">
-              <el-input v-model="copyData.bkafka_user" placeholder="kafka连接用户名" size="small"></el-input>
+            <el-form-item label="kafka连接用户名(hive)" prop="bkafka_user">
+              <el-input v-model="copyData.bkafka_user" placeholder="kafka连接用户名(hive)" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="kafka连接密钥" prop="bkafka_pkey">
-              <el-input v-model="copyData.bkafka_pkey" placeholder="kafka连接密钥" size="small" type="textarea" :autosize="{ minRows: 1, maxRows: 4}"></el-input>
+            <el-form-item label="kafka连接密钥(hive)" prop="bkafka_pkey">
+              <el-input v-model="copyData.bkafka_pkey" placeholder="kafka连接密钥(hive)" size="small" type="textarea" :autosize="{ minRows: 1, maxRows: 4}"></el-input>
             </el-form-item>
+          <el-form-item label="kafka连接ip(kudu)" prop="bkafka_ip_kudu">
+            <el-input v-model="copyData.bkafka_ip_kudu" placeholder="kafka连接ip(kudu)" size="small"></el-input>
+          </el-form-item>
+          <el-form-item label="kafka连接端口(kudu)" prop="bkafka_port_kudu">
+            <el-input v-model="copyData.bkafka_port_kudu" placeholder="kafka连接端口(kudu)" size="small"></el-input>
+          </el-form-item>
+          <el-form-item label="kafka连接用户名(kudu)" prop="bkafka_user_kudu">
+            <el-input v-model="copyData.bkafka_user_kudu" placeholder="kafka连接用户名(kudu)" size="small"></el-input>
+          </el-form-item>
+          <el-form-item label="kafka连接密钥(kudu)" prop="bkafka_pkey_kudu">
+            <el-input v-model="copyData.bkafka_pkey_kudu" placeholder="kafka连接密钥(kudu)" size="small" type="textarea" :autosize="{ minRows: 1, maxRows: 4}"></el-input>
+          </el-form-item>
             <el-form-item label="hive数据库名" prop="bhive_db_name">
               <el-input v-model="copyData.bhive_db_name" placeholder="hive数据库名" size="small"></el-input>
             </el-form-item>
@@ -116,20 +128,29 @@ export default {
         bname: [
           { required: true, message: '请输入业务名称', trigger: 'blur' }
         ],
-        bename: [
-          { required: true, message: '请输入业务英文名称', trigger: 'blur' }
-        ],
         bkafka_ip: [
-          { required: true, message: '请输入kafka连接ip', trigger: 'blur' }
+          { required: true, trigger: 'blur', validator: _isIp }
         ],
         bkafka_port: [
           { required: true, trigger: 'blur', validator: _isInteger }
         ],
         bkafka_user: [
-          { required: true, message: '请输入kafka连接用户名', trigger: 'blur' }
+          { required: true, message: '请输入kafka连接用户名(hive)', trigger: 'blur' }
         ],
         bkafka_pkey: [
-          { required: true, message: '请输入kafka连接密钥', trigger: 'blur' }
+          { required: true, message: '请输入kafka连接密钥(hive)', trigger: 'blur' }
+        ],
+        bkafka_ip_kudu: [
+          { required: true, trigger: 'blur', validator: _isIp }
+        ],
+        bkafka_port_kudu: [
+          { required: true, trigger: 'blur', validator: _isInteger }
+        ],
+        bkafka_user_kudu: [
+          { required: true, message: '请输入kafka连接用户名(kudu)', trigger: 'blur' }
+        ],
+        bkafka_pkey_kudu: [
+          { required: true, message: '请输入kafka连接密钥(kudu)', trigger: 'blur' }
         ],
         bhive_db_name: [
           { required: true, trigger: 'blur', validator: _isVariable }
