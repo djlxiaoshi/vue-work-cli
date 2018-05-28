@@ -4,6 +4,6 @@
  */
 export default {
   env: 'test',
-  API: 'http://test.oa.com',
+  API: 'http://etl-server-test.oa.com/',
   SSO: 'http://sso.oa.com/Index/login/appid/1871'
 };
