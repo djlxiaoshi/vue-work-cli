@@ -14,7 +14,7 @@
       </template>
       <template slot="operate" slot-scope="scope">
         <el-button type="warning" @click="apiEdit(scope.row)" class="etl-btn mini" icon="el-icon-edit" title="编辑" :disabled="scope.row.status !== 1"></el-button>
-        <el-button type="default" @click="openConfigDialog(scope.row)" class="etl-btn mini" icon="el-icon-setting" title="配置" :disabled="scope.row.status !== 0"></el-button>
+        <el-button type="default" @click="openConfigDialog(scope.row)" class="etl-btn mini" icon="el-icon-setting" title="配置" :disabled="scope.row.status === 0"></el-button>
         <el-button type="success" @click="toggle(scope.row, true)" class="etl-btn mini" icon="el-icon-check" title="启用" v-if="scope.row.status === 0 || scope.row.status === 1"></el-button>
         <el-button type="danger" @click="toggle(scope.row, false)" class="etl-btn mini" icon="el-icon-close" title="禁用" v-if="scope.row.status === 2"></el-button>
       </template>
