@@ -60,7 +60,9 @@ export default {
     height: 100vh;
     width: 100%;
     display: flex;
+    overflow: hidden;
     .app-main-left {
+      overflow: auto;
       height: 100%;
       background-color: $appSidebarBgColor;
       .el-menu {
@@ -68,6 +70,7 @@ export default {
       }
     }
     .app-main-right {
+      overflow: auto;
       .header {
         height: 60px;
         box-sizing: border-box;
