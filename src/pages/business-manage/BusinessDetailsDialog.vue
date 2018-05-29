@@ -44,12 +44,12 @@
             <el-form-item label="hive连接端口" prop="bhive_port">
               <el-input v-model="copyData.bhive_port" placeholder="hive连接端口" size="small"></el-input>
             </el-form-item>
-            <!--<el-form-item label="hive用户名" prop="bhive_user">-->
-              <!--<el-input v-model="copyData.bhive_user" placeholder="hive用户名" size="small"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="hive登录密码" prop="bhive_password">-->
-              <!--<el-input v-model="copyData.bhive_password" placeholder="hive登录密码" size="small"></el-input>-->
-            <!--</el-form-item>-->
+            <el-form-item label="hive用户名" prop="bhive_user">
+              <el-input v-model="copyData.bhive_user" placeholder="hive用户名" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="hive登录密码" prop="bhive_password">
+              <el-input v-model="copyData.bhive_password" placeholder="hive登录密码" size="small"></el-input>
+            </el-form-item>
             <el-form-item label="impala数据库名" prop="bimpala_db_name">
               <el-input v-model="copyData.bimpala_db_name" placeholder="impala数据库名" size="small"></el-input>
             </el-form-item>
