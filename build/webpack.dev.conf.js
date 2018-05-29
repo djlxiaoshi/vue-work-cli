@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const config = require('../config')
 const merge = require('webpack-merge')
 const path = require('path')
+const fs = require('fs')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -12,6 +13,11 @@ const portfinder = require('portfinder')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+
+var loading = {
+  html: fs.readFileSync(path.join(__dirname, '../src/loading.html')),
+  // css: '<style>' + fs.readFileSync(path.join(__dirname, '../src/loading.css')) + '</style>'
+}
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -55,7 +61,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      inject: true
+      loading: loading,
+      inject: true,
+      favicon: path.resolve(__dirname, '../src/assets/images/favicon.jpg')
     }),
     // copy custom static assets
     new CopyWebpackPlugin([

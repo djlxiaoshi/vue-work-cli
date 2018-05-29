@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { isInteger, isIp, isVariable } from 'utils';
+import { isInteger, isIp, isVariable, createScript } from 'utils';
 export default {
   name: 'BusinessDetailsDialog',
   data () {
@@ -215,7 +215,9 @@ export default {
       });
     },
     open () {
-      this.dialogVisible = true;
+      createScript('http://tool.oa.com/api/?id=uCheck2', () => {
+        this.dialogVisible = true;
+      });
     },
     close () {
       this.dialogVisible = false;

@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const fs = require('fs')
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
@@ -14,6 +15,11 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
   : require('../config/prod.env')
+
+var loading = {
+  html: fs.readFileSync(path.join(__dirname, '../src/loading.html')),
+  // css: '<style>' + fs.readFileSync(path.join(__dirname, '../src/loading.css')) + '</style>'
+}
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -48,7 +54,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       filename: utils.assetsPath('css/[name].[contenthash].css'),
       // Setting the following option to `false` will not extract CSS from codesplit chunks.
       // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
-      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`, 
+      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`,
       // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
       allChunks: true,
     }),
@@ -68,6 +74,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         : config.build.index,
       template: 'index.html',
       inject: true,
+      loading: loading,
+      favicon: path.resolve(__dirname, '../src/assets/images/favicon.jpg'),
       minify: {
         removeComments: true,
         collapseWhitespace: true,
