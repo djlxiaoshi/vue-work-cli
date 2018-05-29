@@ -62,8 +62,8 @@
             <el-form-item label="zookeeper集群地址" prop="bzk_host">
               <el-input v-model="copyData.bzk_host" placeholder="zookeeper集群地址" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="zookeeper路径" prop="bzk_path" v-if="mode === 'edit' ">
-              <el-input v-model="copyData.bzk_path" placeholder="zookeeper路径" size="small" disabled></el-input>
+            <el-form-item label="zookeeper路径" prop="bzk_path">
+              <el-input v-model="copyData.bzk_path" placeholder="zookeeper路径" size="small"></el-input>
             </el-form-item>
             <el-form-item label="hive表flume链接地址" prop="bflume_endpoint">
               <el-input v-model="copyData.bflume_endpoint" placeholder="hive表flume链接地址" size="small"></el-input>
