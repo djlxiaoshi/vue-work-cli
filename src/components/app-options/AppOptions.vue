@@ -10,9 +10,9 @@
           @change="selectChange($event, index, option, options)">
           <el-option
             v-for="item in option.list"
-            :key="option.valueName ? item[option.valueName] : item.value"
-            :label="option.labelName ? item[option.labelName] : item.label"
-            :value="option.valueName ? item[option.valueName] : item.value">
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
           </el-option>
         </el-select>
       </template>
@@ -26,17 +26,6 @@
         </el-cascader>
       </template>
       <template v-if="option.type === 'singleSelect'">
-        <!--<el-radio-group-->
-          <!--v-model="option.selected"-->
-          <!--size="mini"-->
-          <!--@change="selectChange($event, index, option, options)">-->
-          <!--<el-radio-button-->
-            <!--v-for="item in option.list"-->
-            <!--:key="option.valueName ? item[option.valueName] : item.value"-->
-            <!--:label="option.valueName ? item[option.valueName] : item.value">-->
-            <!--{{ option.labelName ? item[option.labelName] : item.label }}-->
-          <!--</el-radio-button>-->
-        <!--</el-radio-group>-->
         <SingleSelect :option="option" @singleSelectChange="selectChange($event, index, option, options)"></SingleSelect>
       </template>
       <template v-if="option.type === 'multiSelect'">
@@ -67,11 +56,19 @@ export default {
       this.$emit('optionsSelectedChange', { value, index, option, options });
     },
     setDefaultSelected (option) {
-      const valueName = option.valueName || 'value';
+      const valueName = 'value';
       const selected = option.selected ? option.selected
         : option['defaultSelectedIndex'] ? option.list[option['defaultSelectedIndex']][valueName]
           : option.list ? option.list[0][valueName] : '';
       this.$set(option, 'selected', selected); // 加入响应式系统
+    },
+    formatList (list, labelName, valueName) {
+      if (!list || !list.length || !Array.isArray(list)) return [];
+      else {
+        return list.map(item => {
+          return {label: item[labelName], value: item[valueName]};
+        });
+      }
     },
     init () {
       const TotalSyncCount = this.getSyncCount();
@@ -80,13 +77,13 @@ export default {
         this.$emit('optionsReady', this.options);
       }
       this.options.forEach(option => {
-        this.setDefaultSelected(option);
         if (option.query && typeof option.query === 'object') {
           const url = option.query.url;
           const params = option.query.params;
           // 清空设置的list
           this.$http.get(url, params || {}, false).then(data => {
-            this.$set(option, 'list', data.data);
+            const formatList = this.formatList(data.data, option['labelName'] || 'label', option['valueName'] || 'value');
+            this.$set(option, 'list', formatList);
             this.setDefaultSelected(option);
             if (option.sync) {
               count++;
@@ -95,6 +92,8 @@ export default {
               }
             }
           });
+        } else {
+          this.setDefaultSelected(option);
         }
       });
     },

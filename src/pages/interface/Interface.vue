@@ -7,6 +7,7 @@
       :tableColumns="tableColumns"
       :tableData="APIList"
       :options="options"
+      @optionsReady="optionsReady()"
       @optionsSelectedChange="change"
     >
       <template slot="custom-toolbar">
@@ -44,8 +45,12 @@ export default {
           type: 'dropdown',
           labelName: 'bname',
           valueName: 'id',
-          selected: 1,
-          list: []
+          list: [],
+          query: {
+            url: 'business/list/',
+            params: {type: 'my'}
+          },
+          sync: true
         }
       ],
       myBusinessList: [],
@@ -83,23 +88,20 @@ export default {
     AddConfigDialog
   },
   async mounted () {
-    this.myBusinessList = await this.getMyBusinessList();
-    this.options[0].list = this.myBusinessList;
-    this.bid = this.options[0].selected || this.options[0].list[0].id;
-    this.apiData.bid = this.bid;
-    this.getAPIList(this.bid);
+
   },
   methods: {
-    async getMyBusinessList () {
-      const data = await this.$http.get('business/list/', {type: 'my'});
-      return data.data;
-    },
     getAPIList (bid) {
       this.loading = true;
       this.$http.get('api/list/', {bid: bid}).then(data => {
         this.loading = false;
         this.APIList = data.data;
       });
+    },
+    optionsReady (options) {
+      this.bid = this.options[0].selected || this.options[0].list[0].value;
+      this.apiData.bid = this.bid;
+      this.getAPIList(this.bid);
     },
     openAddDialog () {
       this.apiData = {};

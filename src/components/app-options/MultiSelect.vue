@@ -15,9 +15,9 @@
           <el-checkbox
             v-for="item in option.list"
             v-if="!item['_hidden']"
-            :label="option.valueName ? item[option.valueName] : item.value"
-            :key="option.valueName ? item[option.valueName] : item.value">
-            {{ option.labelName ? item[option.labelName] : item.label }}
+            :label="item.value"
+            :key="item.value">
+            {{ item.label }}
           </el-checkbox>
         </el-checkbox-group>
       </div>

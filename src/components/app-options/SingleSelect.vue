@@ -15,13 +15,14 @@
       placement="bottom-end"
       popper-class="single-select-popover"
       :visible-arrow="false"
+      :value="false"
       trigger="click">
       <ul class="dropdown-wrap">
         <li
           v-for="item in verticalList"
           :key="option.valueName ? item[option.valueName] : item.value"
           :class="{'-active': option.selected === item[option.valueName || 'value']}"
-          @click="verticalSelectChange(item[option.valueName || 'value'])">
+          @click="verticalSelectChange(item[option.valueName || 'value'], item)">
           {{ option.labelName ? item[option.labelName] : item.label }}
         </li>
       </ul>
@@ -55,20 +56,46 @@ export default {
         this.option.selected = this.option.list[0].value;
       }
     },
-    splitOptionList () {
-      if (this.option.horizontalCount) {
-        if (this.option.horizontalCount < this.option.list.length) {
-          this.horizontalList = this.option.list.slice(0, this.option.horizontalCount);
-          this.verticalList = this.option.list.slice(this.option.horizontalCount, this.option.list.length);
+    getItemByValue (value) {
+      let item;
+      let itemIndex;
+      this.option.list.some((_item, index) => {
+        if (_item['value'] === value) {
+          item = _item;
+          itemIndex = index;
+          return true;
+        } else {
+          return false;
         }
+      });
+      return { item, itemIndex };
+    },
+    splitOptionList () {
+      const { itemIndex } = this.getItemByValue(this.option.selected);
+      if (this.option.horizontalCount || typeof this.option.horizontalCount === 'number' || this.option.horizontalCount < 0) {
+        // 当默认选择项在水平位置
+        if (itemIndex < this.option.horizontalCount - 1) {
+          if (this.option.horizontalCount < this.option.list.length) {
+            this.horizontalList = this.option.list.slice(0, this.option.horizontalCount);
+            this.verticalList = this.option.list.slice(this.option.horizontalCount, this.option.list.length);
+          }
+        } else {
+          // 默认选择项在垂直位置
+          this.horizontalList = this.option.list.slice(0, this.option.horizontalCount - 1);
+          this.horizontalList.push(this.option.list[itemIndex]);
+          this.verticalList = this.option.list.slice(this.option.horizontalCount - 1, this.option.list.length);
+        }
+      } else {
+        this.horizontalList = this.option.list.slice();
       }
     },
     horizontalSelectChange (value) {
       this.$emit('singleSelectChange', value);
     },
-    verticalSelectChange (value) {
+    verticalSelectChange (value, item) {
       if (this.option.selected === value) return;
       this.option.selected = value;
+      this.horizontalList[this.horizontalList.length - 1] = item;
       this.$emit('singleSelectChange', value);
     }
   },
@@ -91,10 +118,12 @@ export default {
     display: flex;
     align-items: stretch;
     /deep/ .el-radio-group {
-      .el-radio-button:last-child .el-radio-button__inner {
-        -webkit-border-radius: 0;
-        -moz-border-radius: 0;
-        border-radius: 0;
+      .el-radio-button:last-child , .el-radio-button:first-child {
+        .el-radio-button__inner {
+          -webkit-border-radius: 0;
+          -moz-border-radius: 0;
+          border-radius: 0;
+        }
       }
     }
     .down-icon {
@@ -104,8 +133,6 @@ export default {
       height: 100%;
       border: 1px solid #dcdfe6;
       border-left: none;
-      border-top-right-radius: 4px;
-      border-bottom-right-radius: 4px;
     }
   }
 </style>

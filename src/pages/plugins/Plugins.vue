@@ -1,7 +1,6 @@
 <template>
   <div class="app-plugins">
     <AppOptions :options="options" @optionsSelectedChange="change($event)" @optionsReady="optionsReady()"></AppOptions>
-      <AppMenu :menus="routesConfig"></AppMenu>
   </div>
 </template>
 
@@ -35,6 +34,7 @@ export default {
         },
         {
           type: 'singleSelect',
+          selected: 2,
           horizontalCount: 2,
           list: [
             {label: '选项一', value: 0},
