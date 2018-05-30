@@ -2,7 +2,13 @@
   <el-popover width="300">
     <div class="multi-select-wrap">
       <div class="header">
-        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" style="margin-left: 5px">全选</el-checkbox>
+        <el-checkbox
+          :indeterminate="isIndeterminate"
+          v-model="checkAll"
+          @change="handleCheckAllChange"
+          style="margin-left: 5px">
+          全选
+        </el-checkbox>
         <el-input
           size="mini"
           placeholder="搜索"
@@ -62,7 +68,7 @@ export default {
     },
     defaultSelected () {
       const option = this.option;
-      const valueName = option.valueName || 'value';
+      const valueName = 'value';
       const list = (option.list && Array.isArray(option.list)) ? option.list : [];
       let selected = option.selected;
       if (!selected || !Array.isArray(selected)) {
@@ -90,8 +96,7 @@ export default {
     handleCheckAllChange (isCheckAll) {
       let allSelected = [];
       if (isCheckAll) {
-        const valueName = this.option.valueName || 'value';
-        allSelected = this.option.list.map(item => item[valueName]);
+        allSelected = this.option.list.map(item => item['value']);
       }
       this.$set(this.option, 'selected', allSelected);
       this.setCheckAll();

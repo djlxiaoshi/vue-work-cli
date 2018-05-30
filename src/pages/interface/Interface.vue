@@ -7,7 +7,7 @@
       :tableColumns="tableColumns"
       :tableData="APIList"
       :options="options"
-      @optionsReady="optionsReady()"
+      @optionsReady="optionsReady"
       @optionsSelectedChange="change"
     >
       <template slot="custom-toolbar">
@@ -99,7 +99,7 @@ export default {
       });
     },
     optionsReady (options) {
-      this.bid = this.options[0].selected || this.options[0].list[0].value;
+      this.bid = options[0].selected || options[0].list[0].value;
       this.apiData.bid = this.bid;
       this.getAPIList(this.bid);
     },
