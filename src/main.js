@@ -30,6 +30,9 @@ import './assets/styles/initialize.css';
 // 引入font-awesome
 import 'font-awesome/css/font-awesome.css';
 
+// 引入NProgress样式文件
+import 'nprogress/nprogress.css';
+
 Vue.config.productionTip = false;
 // Vue.use(ElementUI);
 

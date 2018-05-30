@@ -5,6 +5,7 @@
 import axios from 'axios';
 import { Notification } from 'element-ui';
 import ENV from '@/environment/environment';
+import NProgress from 'nprogress';
 
 const CODE = {
   SUCCEE: 0,
@@ -16,6 +17,7 @@ const CODE = {
 axios.interceptors.request.use(function (config) {
   // 设置携带Cookies
   config.withCredentials = true;
+  NProgress.start();
   return config;
 }, function (error) {
   // Do something with request error
@@ -24,6 +26,7 @@ axios.interceptors.request.use(function (config) {
 
 // 增加响应拦截器（判断用户是否登录）
 axios.interceptors.response.use((response) => {
+  NProgress.done();
   if (response.status === 200) {
     if (response.data.error_code !== CODE.SUCCEE) {
       if (response.data.error_code === CODE.NO_LOGIN) {
