@@ -3,7 +3,7 @@
  * @Date 2018/4/19 19:58
  */
 export default {
-  env: 'dev',
+  env: 'test',
   API: 'http://etl-server-test.oa.com/',
-  SSO: 'http://sso.oa.com/Index/login/appid/1873'
+  SSO: 'http://sso.oa.com/Index/login/appid/1871'
 };

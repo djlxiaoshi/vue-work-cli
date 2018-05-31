@@ -36,6 +36,8 @@ npm run buildLocal  // 测试环境
 | +-- plugins // Vue插件
 | +-- router // 路由
 | +-- store // Vuex文件
+| +-- environment // 环境配置文件
+| +-- exemples // 示例文件
 | +-- App.vue // Vue根组件
 | +-- loading.html // 项目启动时的loading
 | +-- main.js // 项目入口文件
