@@ -56,4 +56,8 @@ npm run buildLocal  // 测试环境
   - 人员选择器  [参考链接](http://cms.oa.com/demo/uCheck2.html)  属于公司内部插件
   
 ## 项目公共组件配置
-  [app-table]()
+  [app-table]('./src/components/app-table/config.md')
+  
+  [ap-options]('./src/components/app-options/config.md')
+  
+  [app-menu]('./src/components/app-menu/config.md')
