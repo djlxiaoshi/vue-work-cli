@@ -14,7 +14,7 @@ export default {
 <style lang="scss">
 @import './assets/styles/index';
 #app {
-  font-family: 'Microsoft Yahei', 'Open Sans', 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Microsoft Yahei', 'Open Sans', 'Avenir', Helvetica, Arial, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
