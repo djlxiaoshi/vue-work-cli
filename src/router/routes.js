@@ -136,7 +136,6 @@ const mainRoutes = [
   },
   {
     path: '/examples',
-    name: 'Examples',
     label: '示例',
     component: Examples,
     hidden: true, // 隐藏  浏览器导航栏可以进入

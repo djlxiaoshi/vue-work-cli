@@ -59,8 +59,8 @@ npm run buildLocal  // 测试环境
   
 ## 项目公共组件配置
   
-  [app-table]('./src/components/app-table/config.md')
+  [app-table]('src/components/app-table/config.md')
   
-  [ap-options]('./src/components/app-options/config.md')
+  [ap-options]('src/components/app-options/config.md')
   
-  [app-menu]('./src/components/app-menu/config.md')
+  [app-menu]('src/components/app-menu/config.md')
