@@ -45,7 +45,6 @@ export default {
           type: 'dropdown',
           labelName: 'bname',
           valueName: 'id',
-          list: [],
           query: {
             url: 'business/list/',
             params: {type: 'my'}

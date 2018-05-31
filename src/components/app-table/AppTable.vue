@@ -43,7 +43,7 @@
               <slot :name="columns['slotName']" :row="scope.row"></slot>
             </template>
             <template v-else-if="columns['formatter']">
-              {{ columns['formatter'](scope.row) }}
+              {{ columns['formatter'](scope.row[columns['field']], scope.row )}}
             </template>
             <template v-else>
               <span :class="{'-include': setIncludeColor(scope.row[columns['field']])}"> {{ scope.row[columns['field']] }} </span>

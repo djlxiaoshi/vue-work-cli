@@ -2,34 +2,20 @@
   <div class="app-options-bar" v-if="options.length">
     <div v-for="(option, index) in options" :key="index" class="option">
       <template v-if="option.type === 'dropdown'">
-        <el-select
-          v-model="option.selected"
-          placeholder="请选择"
-          size="mini"
-          :loading="option.loading"
-          @change="selectChange($event, index, option, options)">
-          <el-option
-            v-for="item in option.list"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+        <AppDropdownSelect :option="option" @dropdownSelectChange="selectChange($event, index, option, options)"></AppDropdownSelect>
       </template>
       <template v-if="option.type === 'cascade'">
-        <el-cascader
-          size="mini"
-          :options="option.list"
-          v-model="option.selected"
-          @active-item-change="cascadeItemChange($event, index, option, options)"
-          @change="selectChange($event, index, option, options)">
-        </el-cascader>
+        <AppCascadeSelect
+          :option="option"
+          @cascadeSelectChange="selectChange($event, index, option, options)"
+          @cascadeItemChange="cascadeItemChange($event, index, option, options)"
+        ></AppCascadeSelect>
       </template>
       <template v-if="option.type === 'singleSelect'">
-        <SingleSelect :option="option" @singleSelectChange="selectChange($event, index, option, options)"></SingleSelect>
+        <AppSingleSelect :option="option" @singleSelectChange="selectChange($event, index, option, options)"></AppSingleSelect>
       </template>
       <template v-if="option.type === 'multiSelect'">
-        <MultiSelect :option="option" @multiSelectChange="selectChange($event, index, option, options)"></MultiSelect>
+        <AppMultiSelect :option="option" @multiSelectChange="selectChange($event, index, option, options)"></AppMultiSelect>
       </template>
     </div>
   </div>
@@ -55,13 +41,6 @@ export default {
     selectChange (value, index, option, options) {
       this.$emit('optionsSelectedChange', { value, index, option, options });
     },
-    setDefaultSelected (option) {
-      const valueName = 'value';
-      const selected = option.selected ? option.selected
-        : option['defaultSelectedIndex'] ? option.list[option['defaultSelectedIndex']][valueName]
-          : option.list ? option.list[0][valueName] : '';
-      this.$set(option, 'selected', selected); // 加入响应式系统
-    },
     formatList (list, labelName, valueName) {
       if (!list || !list.length || !Array.isArray(list)) return [];
       else {
@@ -84,7 +63,6 @@ export default {
           this.$http.get(url, params || {}, false).then(data => {
             const formatList = this.formatList(data.data, option['labelName'] || 'label', option['valueName'] || 'value');
             this.$set(option, 'list', formatList);
-            this.setDefaultSelected(option);
             if (option.sync) {
               count++;
               if (count === TotalSyncCount) {
@@ -92,8 +70,6 @@ export default {
               }
             }
           });
-        } else {
-          this.setDefaultSelected(option);
         }
       });
     },

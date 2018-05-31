@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: 'SingleSelect',
+  name: 'AppSingleSelect',
   data () {
     return {
       horizontalList: [],
@@ -44,7 +44,10 @@ export default {
   },
   props: ['option'],
   created () {
-    this.init();
+    // 同步时初始化（即传递了list列表）
+    if (this.option.list && Array.isArray(this.option.list)) {
+      this.init();
+    }
   },
   methods: {
     init () {
@@ -106,7 +109,7 @@ export default {
     }
   },
   watch: {
-    option (option) {
+    option () {
       this.init();
     }
   }
