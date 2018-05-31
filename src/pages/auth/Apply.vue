@@ -48,8 +48,6 @@
 </template>
 
 <script>
-import { roleConfig } from '@/config/config';
-import { Notification } from 'element-ui';
 import { mapGetters } from 'vuex';
 export default {
   name: 'Apply',
@@ -57,7 +55,6 @@ export default {
     return {
       businessId: undefined,
       reason: '',
-      roleConfig: roleConfig,
       businessList: [],
       myBusinessList: [],
       number: 0
@@ -89,7 +86,7 @@ export default {
       // 参数验证
       const validateResult = this.paramsValidate(params);
       if (typeof validateResult === 'string') {
-        Notification.warning({
+        this.$notice.warning({
           title: 'Warning',
           message: validateResult
         });

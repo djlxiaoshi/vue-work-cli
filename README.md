@@ -56,11 +56,22 @@ npm run buildLocal  // 测试环境
   - 字体图标库 [font-awesome@4.7.0](http://fontawesome.dashgame.com/)
   - 页面上方进度条 [nprogress@0.2.0](https://github.com/rstacruz/nprogress)
   - 人员选择器  [参考链接](http://cms.oa.com/demo/uCheck2.html)  属于公司内部插件
+  - 计算表格列宽 [gettabledatasize](https://github.com/taozhiw/getTableDataSize)
   
 ## 项目公共组件配置
   
-  [app-table]('src/components/app-table/config.md')
+  [app-table](src/components/app-table/config.md)
   
-  [ap-options]('src/components/app-options/config.md')
+  [ap-options](src/components/app-options/config.md)
   
-  [app-menu]('src/components/app-menu/config.md')
+  [app-menu](src/components/app-menu/config.md)
+  
+  
+## 项目数据说明
+**role_id:** `user/info/`  接口
+```text
+ 1: 普通用户
+ 2: 业务管理人员
+ 3: 业务配置人员
+ 99: 管理人员
+```
