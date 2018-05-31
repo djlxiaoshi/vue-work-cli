@@ -1,16 +1,13 @@
 <template>
-  <div class="app-plugins">
-    <AppOptions
-      :options="options"
-      @optionsSelectedChange="change"
-      @optionsReady="optionsReady"></AppOptions>
-  </div>
+  <AppOptions
+    :options="options"
+    @optionsSelectedChange="change"
+    @optionsReady="optionsReady"></AppOptions>
 </template>
 
 <script>
-import { mainRoutes } from '@/router/routes';
-
 export default {
+  name: 'AppOptionsEg',
   data () {
     return {
       options: [
@@ -81,14 +78,10 @@ export default {
             }]
           }]
         }
-      ],
-      routesConfig: mainRoutes
+      ]
     };
   },
-  mounted () {
-  },
-  components: {
-  },
+  props: [],
   methods: {
     change (data) {
       console.log(data);
@@ -99,3 +92,7 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+
+</style>

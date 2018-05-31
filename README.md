@@ -36,6 +36,8 @@ npm run buildLocal  // 测试环境
 | +-- plugins // Vue插件
 | +-- router // 路由
 | +-- store // Vuex文件
+| +-- environment // 环境配置文件
+| +-- exemples // 示例文件
 | +-- App.vue // Vue根组件
 | +-- loading.html // 项目启动时的loading
 | +-- main.js // 项目入口文件
@@ -56,6 +58,9 @@ npm run buildLocal  // 测试环境
   - 人员选择器  [参考链接](http://cms.oa.com/demo/uCheck2.html)  属于公司内部插件
   
 ## 项目公共组件配置
-  [app-table]()
   
+  [app-table]('./src/components/app-table/config.md')
   
+  [ap-options]('./src/components/app-options/config.md')
+  
+  [app-menu]('./src/components/app-menu/config.md')

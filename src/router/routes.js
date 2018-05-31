@@ -12,7 +12,13 @@ import Check from '@/pages/auth/Check';
 import Settings from '@/pages/auth/Settings';
 import BusinessList from '@/pages/business-manage/BusinessList';
 import Plugins from '@/pages/plugins/Plugins';
+import Examples from '@/exemples/Examples';
 import NotFound from '@/components/app-exception/NotFound.vue';
+
+// 示例组件
+import AppOptionsEg from '@/exemples/AppOptionsEg';
+import AppTableEg from '@/exemples/AppTableEg';
+import AppMenuEg from '@/exemples/AppMenuEg';
 
 import store from '../store/index';
 
@@ -127,6 +133,31 @@ const mainRoutes = [
     label: '插件',
     component: Plugins,
     hidden: true // 隐藏  浏览器导航栏可以进入
+  },
+  {
+    path: '/examples',
+    name: 'Examples',
+    label: '示例',
+    component: Examples,
+    hidden: true, // 隐藏  浏览器导航栏可以进入
+    children: [
+      {
+        path: 'app-options-eg',
+        component: AppOptionsEg
+      },
+      {
+        path: 'app-table-eg',
+        component: AppTableEg
+      },
+      {
+        path: 'app-menu-eg',
+        component: AppMenuEg
+      },
+      {
+        path: '',
+        redirect: 'app-options-eg'
+      }
+    ]
   },
   {
     path: '',

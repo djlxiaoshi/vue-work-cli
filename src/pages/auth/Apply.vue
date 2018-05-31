@@ -126,11 +126,12 @@ export default {
 
 <style lang="scss" scoped>
  .auth-apply-page {
-    .-etl-list-group {
-      .list-item {
-        margin: 25px auto;
-      }
-    }
+   .-etl-list-group {
+     .list-item {
+       margin: 25px auto;
+       align-items: center;
+     }
+   }
    .btn-wrap {
      text-align: left;
    }
