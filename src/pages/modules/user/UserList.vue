@@ -52,7 +52,7 @@
 
 <script>
 export default {
-  name: 'Settings',
+  name: 'UserList',
   data () {
     return {
       tableColumns: [

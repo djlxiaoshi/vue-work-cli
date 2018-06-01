@@ -33,11 +33,12 @@ npm run buildLocal  // 测试环境
 | | +-- js // 公共js
 | +-- components // 项目公共组件 （这个里面的组件会自动全局注册，详见main.js自动注册代码部分）
 | +-- pages // 项目页面
+| |+-- core // 
+| |+-- modules // 项目模块（每一个侧边栏的菜单都是一个模块）
 | +-- plugins // Vue插件
 | +-- router // 路由
 | +-- store // Vuex文件
 | +-- environment // 环境配置文件
-| +-- exemples // 示例文件
 | +-- App.vue // Vue根组件
 | +-- loading.html // 项目启动时的loading
 | +-- main.js // 项目入口文件
@@ -66,6 +67,16 @@ npm run buildLocal  // 测试环境
   
   [app-menu](src/components/app-menu/config.md)
   
+## 项目用到的一些优化技术
+  - element-ui 组件按需加载 
+  - 公共组件自动化全局注册 使用webpack的require.context来进行加载
+  - route路由配置文件去中心化 同样是使用webpack的require.context来进行组件加载
+  - [路由懒加载](https://router.vuejs.org/zh/guide/advanced/lazy-loading.html#%E6%8A%8A%E7%BB%84%E4%BB%B6%E6%8C%89%E7%BB%84%E5%88%86%E5%9D%97) 每一个侧边栏的菜单都是一个模块，每个模块都是到使用的时候才会加载 
+  - 利用递归组件实现无限层级菜单，具体参考[递归组件](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E9%80%92%E5%BD%92%E7%BB%84%E4%BB%B6)
+  - 利用\$attrs和\$listeners方便跨层级组件通信
+  - 利用webpack-html-plugin实现白屏时loading插入和favicon.jpg的设置
+  - [实用的优化技巧](https://zhuanlan.zhihu.com/p/37148975?utm_source=wechat_session&utm_medium=social&utm_oi=32383348768768&from=timeline&isappinstalled=0)
+  - [更多](http://djl.pub)
   
 ## 项目数据说明
 **role_id:** `user/info/`  接口
