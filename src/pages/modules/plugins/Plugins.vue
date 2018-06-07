@@ -13,6 +13,7 @@ import { mainRoutes } from '@/router/routes';
 export default {
   data () {
     return {
+      obj: {age: 1, name: 'djlxs'},
       options: [
         {
           type: 'dropdown',
