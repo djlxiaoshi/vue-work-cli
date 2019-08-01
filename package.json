@@ -23,7 +23,7 @@
     "axios": "0.18.0",
     "element-ui": "2.3.4",
     "font-awesome": "4.7.0",
-    "gettabledatasize": "0.1.0",
+    "gettabledatasize": "^1.1.4",
     "nprogress": "0.2.0",
     "rxjs": "6.0.0",
     "vue": "2.5.16",
